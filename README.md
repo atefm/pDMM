@@ -1,11 +1,11 @@
-##pDMM: Python implemetation for Dirichlet Multinomial Mixture (DMM) model
+# pDMM: Python implemetation for Dirichlet Multinomial Mixture (DMM) model
 
 
 Applying topic models for short texts (e.g. Tweets) is more challenging because of data sparsity and the limited contexts in such texts. One approach is to combine short texts into long pseudo-documents before training LDA. Another approach is to assume that there is only one topic per document [3]. pDMM provides implementations of the one-topic-per-document Dirichlet Multinomial Mixture (DMM) model (i.e. mixture of unigrams) [1][4].
 
 Bug reports, comments and suggestions about pDMM are highly appreciated. As a free open-source package, pDMM is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-### Usage
+# Usage
 
 	$ python pDMM.py [-h] --corpus <path> [--output <path>] [--ntopics <integer>] [--alpha <double>] [--beta <double>] [--niters <intege>] [--twords <integer>] [--name <string>]
 
@@ -36,11 +36,11 @@ where parameters in [ ] are optional.
 
 The output files are by default saved in output directory. We have output files of `test.topWords` and `test.topicAssignments`, referring to the top topical words and topic assignments respectively.
 
-###Requirements
+# Requirements
 Python 2.7
 
 
-###References
+# References
 [1]	  Yin, J. and Wang, J., 2014, August. A dirichlet multinomial mixture model-based approach for short text clustering. In Proceedings of the 20th ACM SIGKDD international conference on Knowledge discovery and data mining (pp. 233-242). ACM.
 
 [2]   David M. Blei. 2012. Probabilistic Topic Models. Communications of the ACM, 55(4):77–84.

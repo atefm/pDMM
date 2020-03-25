@@ -28,11 +28,12 @@ def check_arg(args=None):
 
 
 if __name__ == '__main__':
-    model = GibbsSamplingDMM(check_arg(sys.argv[1:]))
+    args = check_arg(sys.argv[1:])
+    model = GibbsSamplingDMM(args)
     model.analyse_corpus()
     model.topic_assignment_initialise()
     model.inference()
 
     print("Writing Results")
     model.write_top_topical_words()
-    model.write_topic_assignments()
+    model.save_topic_assignments_to_file(args.output + args.name + ".topicAssignments")

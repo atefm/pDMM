@@ -1,7 +1,6 @@
 """
 Tests for the command line.
 """
-from __future__ import print_function, division
 import os
 import random
 import tempfile
@@ -27,13 +26,14 @@ class CommandLineTests(unittest.TestCase):
             50,
         )
         arguments_components = arg_string.split()
-        model = GibbsSamplingDMM(check_arg(arguments_components))
+        parsed_args = check_arg(arguments_components)
+        model = GibbsSamplingDMM(parsed_args)
         model.analyse_corpus()
         model.topic_assignment_initialise()
         model.inference()
 
-        model.write_top_topical_words()
-        model.write_topic_assignments()
+        model.save_top_topical_words_to_file(parsed_args.output + parsed_args.name + ".topWords")
+        model.save_topic_assignments_to_file(parsed_args.output + parsed_args.name + ".topicAssignments")
 
         expected_top_words = read_contents_from_path("tests/data/topWords")
         expected_topic_assignments = read_contents_from_path("tests/data/topicAssignments")

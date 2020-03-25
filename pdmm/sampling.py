@@ -1,4 +1,3 @@
-from __future__ import print_function, division
 import random
 
 
@@ -134,23 +133,67 @@ class GibbsSamplingDMM(object):
         for iteration in range(self.number_of_iterations):
             self.sample_in_single_iteration(iteration)
 
-    def write_topic_assignments(self):
-        with open(self.output + self.name + ".topicAssignments", "w") as wf:
+    def save_topic_assignments_to_file(self, file_path):
+        """
+        Save the topic assignments to a file.
+
+        Parameters
+        ----------
+        file_path : str
+            The location at which to save the file.
+        """
+        with open(file_path, "w") as wf:
             for document_index in range(self.number_of_documents):
-                wf.write(str(self.topic_assignments[document_index]) + "\n")
+                line = str(self.topic_assignments[document_index]) + "\n"
+                wf.write(line)
 
-    def write_top_topical_words(self):
-        with open(self.output + self.name + ".topWords", "w") as wf:
+    def get_top_words_for_topic(self, topic_index, number_of_top_words=20):
+        """
+        Get a list of the top words in a topic.
+
+        Parameters
+        ----------
+        topic_index: int
+            The index of the desired topic.
+
+        Optional Parameters
+        -------------------
+        number_of_top_words : int
+            The number of top words to return.
+
+        Returns
+        -------
+        top_words : list[str]
+            A list of the top words as strings.
+        """
+        word_count = {w: self.topic_word_count[topic_index][w] for w in range(len(self.word_to_id))}
+        top_words = []
+        sorted_word_ids_iterator = iter(sorted(word_count, key=word_count.get, reverse=True))
+
+        while len(top_words) < number_of_top_words:
+            next_word_id = next(sorted_word_ids_iterator)
+            next_word = self.id_to_word[next_word_id]
+            top_words.append(next_word)
+
+        return top_words
+
+    def save_top_topical_words_to_file(self, file_path, number_of_top_words=20):
+        """
+        Save the top words in the topics to a file.
+
+        Parameters
+        ----------
+        file_path : str
+            The location at which to save the file.
+
+        Optional Parameters
+        -------------------
+        number_of_top_words : int
+            The number of top words from each topic to save.
+        """
+        with open(file_path, "w") as wf:
             for topic_index in range(self.number_of_topics):
-                word_count = {w: self.topic_word_count[topic_index][w] for w in range(len(self.word_to_id))}
+                top_words = self.get_top_words_for_topic(topic_index, number_of_top_words=number_of_top_words)
 
-                count = 0
-                string = "Topic " + str(topic_index) + ": "
-
-                for index in sorted(word_count, key=word_count.get, reverse=True):
-                    string += self.id_to_word[index] + " "
-                    count += 1
-                    if count >= self.number_of_top_words:
-                        wf.write(string + "\n")
-                        # print string
-                        break
+                line = "Topic {}: {} \n".format(topic_index, " ".join(top_words))
+                wf.write(line)

@@ -61,11 +61,11 @@ class GibbsSamplingDMM(object):
         self.beta_sum = len(self.word_to_id) * self.beta
 
     def topic_assignment_initialise(self):
-        self.document_topic_count = [0 for x in range(self.number_of_topics)]
-        self.sum_topic_word_count = [0 for x in range(self.number_of_topics)]
+        self.document_topic_count = [0 for __ in range(self.number_of_topics)]
+        self.sum_topic_word_count = [0 for __ in range(self.number_of_topics)]
 
         for i in range(self.number_of_topics):
-            self.topic_word_count.append([0 for x in range(len(self.word_to_id))])
+            self.topic_word_count.append([0 for __ in range(len(self.word_to_id))])
 
         for i in range(self.number_of_documents):
             topic = random.randint(0, self.number_of_topics - 1)
@@ -128,7 +128,7 @@ class GibbsSamplingDMM(object):
             self.topic_assignments[d] = topic
 
     def inference(self):
-        self.multi_pros = [0 for x in range(self.number_of_topics)]
+        self.multi_pros = [0 for __ in range(self.number_of_topics)]
         [self.sample_in_single_iteration(x) for x in range(self.number_of_iterations)]
 
     def write_topic_assignments(self):

@@ -147,6 +147,36 @@ class GibbsSamplingDMM(object):
                 line = str(self.topic_assignments[document_index]) + "\n"
                 wf.write(line)
 
+    def get_top_words_for_topic(self, topic_index, number_of_top_words=20):
+        """
+        Get a list of the top words in a topic.
+
+        Parameters
+        ----------
+        topic_index: int
+            The index of the desired topic.
+
+        Optional Parameters
+        -------------------
+        number_of_top_words : int
+            The number of top words to return.
+
+        Returns
+        -------
+        top_words : list[str]
+            A list of the top words as strings.
+        """
+        word_count = {w: self.topic_word_count[topic_index][w] for w in range(len(self.word_to_id))}
+        top_words = []
+        sorted_word_ids_iterator = iter(sorted(word_count, key=word_count.get, reverse=True))
+
+        while len(top_words) < number_of_top_words:
+            next_word_id = next(sorted_word_ids_iterator)
+            next_word = self.id_to_word[next_word_id]
+            top_words.append(next_word)
+
+        return top_words
+
     def write_top_topical_words(self):
         with open(self.output + self.name + ".topWords", "w") as wf:
             for topic_index in range(self.number_of_topics):

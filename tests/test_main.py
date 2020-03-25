@@ -6,8 +6,8 @@ import random
 import tempfile
 import unittest
 
-from pdmm.GibbsSamplingDMM import GibbsSamplingDMM
-from pdmm.pDMM import check_arg
+from pdmm.sampling import GibbsSamplingDMM
+from pdmm.__main__ import check_arg
 
 from .utils import read_contents_from_path
 

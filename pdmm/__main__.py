@@ -2,7 +2,7 @@ import argparse
 import os
 import sys
 
-import GibbsSamplingDMM as dmm
+from sampling import GibbsSamplingDMM
 
 
 def is_valid_file(parser, data_file):
@@ -28,7 +28,7 @@ def check_arg(args=None):
 
 
 if __name__ == '__main__':
-    model = dmm.GibbsSamplingDMM(check_arg(sys.argv[1:]))
+    model = GibbsSamplingDMM(check_arg(sys.argv[1:]))
     model.analyse_corpus()
     model.topic_assignment_initialise()
     model.inference()

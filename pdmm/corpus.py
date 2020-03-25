@@ -60,7 +60,7 @@ class Corpus:
             for word in list_of_words:
                 word_id = vocab.get_id_from_word(word)
                 document.append(word_id)
-                word_occurrence_to_index_in_document_count += 1
+                word_occurrence_to_index_in_document_count[word] += 1
 
                 word_occurrence_to_index_in_document.append(word_occurrence_to_index_in_document_count[word])
 

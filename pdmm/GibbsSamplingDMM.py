@@ -129,12 +129,13 @@ class GibbsSamplingDMM(object):
 
     def inference(self):
         self.multi_pros = [0 for __ in range(self.number_of_topics)]
-        [self.sample_in_single_iteration(x) for x in range(self.number_of_iterations)]
+        for iteration in range(self.number_of_iterations):
+            self.sample_in_single_iteration(iteration)
 
     def write_topic_assignments(self):
         with open(self.output + self.name + ".topicAssignments", "w") as wf:
-            # for i in range(self.numDocuments):
-            [wf.write(str(self.topic_assignments[i]) + "\n") for i in range(self.number_of_documents)]
+            for i in range(self.number_of_documents):
+                wf.write(str(self.topic_assignments[i]) + "\n")
 
     def write_top_topical_words(self):
         with open(self.output + self.name + ".topWords", "w") as wf:

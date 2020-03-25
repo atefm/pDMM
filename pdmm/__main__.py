@@ -35,5 +35,5 @@ if __name__ == '__main__':
     model.inference()
 
     print("Writing Results")
-    model.write_top_topical_words()
+    model.save_top_topical_words_to_file(args.output + args.name + ".topWords")
     model.save_topic_assignments_to_file(args.output + args.name + ".topicAssignments")

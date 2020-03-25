@@ -32,7 +32,7 @@ class CommandLineTests(unittest.TestCase):
         model.topic_assignment_initialise()
         model.inference()
 
-        model.write_top_topical_words()
+        model.save_top_topical_words_to_file(parsed_args.output + parsed_args.name + ".topWords")
         model.save_topic_assignments_to_file(parsed_args.output + parsed_args.name + ".topicAssignments")
 
         expected_top_words = read_contents_from_path("tests/data/topWords")

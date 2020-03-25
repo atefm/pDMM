@@ -133,10 +133,19 @@ class GibbsSamplingDMM(object):
         for iteration in range(self.number_of_iterations):
             self.sample_in_single_iteration(iteration)
 
-    def write_topic_assignments(self):
-        with open(self.output + self.name + ".topicAssignments", "w") as wf:
+    def save_topic_assignments_to_file(self, file_path):
+        """
+        Save the topic assignments to a file.
+
+        Parameters
+        ----------
+        file_path : str
+            The location at which to save the file.
+        """
+        with open(file_path, "w") as wf:
             for document_index in range(self.number_of_documents):
-                wf.write(str(self.topic_assignments[document_index]) + "\n")
+                line = str(self.topic_assignments[document_index]) + "\n"
+                wf.write(line)
 
     def write_top_topical_words(self):
         with open(self.output + self.name + ".topWords", "w") as wf:

@@ -25,12 +25,12 @@ class CommandLineTests(unittest.TestCase):
         )
         arguments_components = arg_string.split()
         model = GibbsSamplingDMM(check_arg(arguments_components))
-        model.analyseCorpus()
-        model.topicAssigmentInitialise()
+        model.analyse_corpus()
+        model.topic_assignment_initialise()
         model.inference()
 
-        model.writeTopTopicalWords()
-        model.writeTopicAssignments()
+        model.write_top_topical_words()
+        model.write_topic_assignments()
 
         expected_top_words = read_contents_from_path("tests/data/topWords")
         expected_topic_assignments = read_contents_from_path("tests/data/topicAssignments")

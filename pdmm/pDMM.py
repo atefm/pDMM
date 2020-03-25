@@ -29,10 +29,10 @@ def check_arg(args=None):
 
 if __name__ == '__main__':
     model = dmm.GibbsSamplingDMM(check_arg(sys.argv[1:]))
-    model.analyseCorpus()
-    model.topicAssigmentInitialise()
+    model.analyse_corpus()
+    model.topic_assignment_initialise()
     model.inference()
 
     print "Writing Results"
-    model.writeTopTopicalWords()
-    model.writeTopicAssignments()
+    model.write_top_topical_words()
+    model.write_topic_assignments()

@@ -2,81 +2,81 @@ import random
 
 
 class GibbsSamplingDMM(object):
-    numDocuments = 0
-    numWordsInCorpus = 0
-    word2IdVocabulary = {}
-    id2WordVocabulary = {}
+    number_of_documents = 0
+    number_of_words_in_corpus = 0
+    word_to_id = {}
+    id_to_word = {}
     documents = []
-    occurenceToIndexCount = []
-    topicAssignments = []
-    docTopicCount = []
-    topicWordCount = []
-    sumTopicWordCount = []
-    multiPros = []
-    betaSum = 0.
+    occurrence_to_index_count = []
+    topic_assignments = []
+    document_topic_count = []
+    topic_word_count = []
+    sum_topic_word_count = []
+    multi_pros = []
+    beta_sum = 0.
 
-    def __init__(self, paramters):
+    def __init__(self, parameters):
         super(GibbsSamplingDMM, self).__init__()
-        self.corpus = paramters.corpus
-        self.output = paramters.output
-        self.ntopics = int(paramters.ntopics)
-        self.alpha = float(paramters.alpha)
-        self.beta = float(paramters.beta)
-        self.niters = int(paramters.niters)
-        self.twords = int(paramters.twords)
-        self.name = paramters.name
+        self.corpus = parameters.corpus
+        self.output = parameters.output
+        self.number_of_topics = int(parameters.ntopics)
+        self.alpha = float(parameters.alpha)
+        self.beta = float(parameters.beta)
+        self.number_of_iterations = int(parameters.niters)
+        self.number_of_top_words = int(parameters.twords)
+        self.name = parameters.name
 
-    def analyseCorpus(self):
-        indexWord = 0
+    def analyse_corpus(self):
+        index_word = 0
         data = open(self.corpus, 'r')
         for doc in data:
             document = []
-            wordOccurenceToIndexInDocCount = {}
-            wordOccurenceToIndexInDoc = []
+            word_occurrence_to_index_in_doc_count = {}
+            word_occurrence_to_index_in_doc = []
             if doc.rstrip != None:
                 words = doc.rstrip().split()
                 for word in words:
 
-                    if word in self.word2IdVocabulary:
-                        document.append(self.word2IdVocabulary[word])
+                    if word in self.word_to_id:
+                        document.append(self.word_to_id[word])
                     else:
-                        self.word2IdVocabulary[word] = indexWord
-                        self.id2WordVocabulary[indexWord] = word
-                        document.append(indexWord)
-                        indexWord += 1
+                        self.word_to_id[word] = index_word
+                        self.id_to_word[index_word] = word
+                        document.append(index_word)
+                        index_word += 1
 
-                    if word in wordOccurenceToIndexInDocCount:
-                        wordOccurenceToIndexInDocCount[word] += 1
+                    if word in word_occurrence_to_index_in_doc_count:
+                        word_occurrence_to_index_in_doc_count[word] += 1
                     else:
-                        wordOccurenceToIndexInDocCount[word] = 1
+                        word_occurrence_to_index_in_doc_count[word] = 1
 
-                    wordOccurenceToIndexInDoc.append(wordOccurenceToIndexInDocCount[word])
+                    word_occurrence_to_index_in_doc.append(word_occurrence_to_index_in_doc_count[word])
 
-                self.numWordsInCorpus += len(document)
-                self.numDocuments += 1
+                self.number_of_words_in_corpus += len(document)
+                self.number_of_documents += 1
                 self.documents.append(document)
-                self.occurenceToIndexCount.append(wordOccurenceToIndexInDoc)
+                self.occurrence_to_index_count.append(word_occurrence_to_index_in_doc)
 
-        self.betaSum = len(self.word2IdVocabulary) * self.beta
+        self.beta_sum = len(self.word_to_id) * self.beta
 
-    def topicAssigmentInitialise(self):
-        self.docTopicCount = [0 for x in range(self.ntopics)]
-        self.sumTopicWordCount = [0 for x in range(self.ntopics)]
+    def topic_assignment_initialise(self):
+        self.document_topic_count = [0 for x in range(self.number_of_topics)]
+        self.sum_topic_word_count = [0 for x in range(self.number_of_topics)]
 
-        for i in range(self.ntopics):
-            self.topicWordCount.append([0 for x in range(len(self.word2IdVocabulary))])
+        for i in range(self.number_of_topics):
+            self.topic_word_count.append([0 for x in range(len(self.word_to_id))])
 
-        for i in range(self.numDocuments):
-            topic = random.randint(0, self.ntopics - 1)
-            self.docTopicCount[topic] += 1
+        for i in range(self.number_of_documents):
+            topic = random.randint(0, self.number_of_topics - 1)
+            self.document_topic_count[topic] += 1
 
             for j in range(len(self.documents[i])):
-                self.topicWordCount[topic][self.documents[i][j]] += 1
-                self.sumTopicWordCount[topic] += 1
+                self.topic_word_count[topic][self.documents[i][j]] += 1
+                self.sum_topic_word_count[topic] += 1
 
-            self.topicAssignments.append(topic)
+            self.topic_assignments.append(topic)
 
-    def nextDiscrete(self, a):
+    def next_discrete(self, a):
         b = 0.
 
         for i in range(len(a)):
@@ -91,61 +91,61 @@ class GibbsSamplingDMM(object):
                 return i
         return len(a) - 1
 
-    def sampleInSingleIteration(self, x):
+    def sample_in_single_iteration(self, x):
         print ("iteration: " + str(x))
-        for d in range(self.numDocuments):
-            topic = self.topicAssignments[d]
-            self.docTopicCount[topic] -= 1
-            docSize = len(self.documents[d])
+        for d in range(self.number_of_documents):
+            topic = self.topic_assignments[d]
+            self.document_topic_count[topic] -= 1
+            doc_size = len(self.documents[d])
             document = self.documents[d]
 
-            for w in range(docSize):
+            for w in range(doc_size):
                 word = document[w]
-                self.topicWordCount[topic][word] -= 1
-                self.sumTopicWordCount[topic] -= 1
+                self.topic_word_count[topic][word] -= 1
+                self.sum_topic_word_count[topic] -= 1
 
-            for t in range(self.ntopics):
-                self.multiPros[t] = self.docTopicCount[t] + self.alpha
+            for t in range(self.number_of_topics):
+                self.multi_pros[t] = self.document_topic_count[t] + self.alpha
 
-                for w in range(docSize):
+                for w in range(doc_size):
                     word = document[w]
-                    self.multiPros[t] *= (self.topicWordCount[t][word] + self.beta + self.occurenceToIndexCount[d][
-                        w] - 1) / (self.sumTopicWordCount[t] + w + self.betaSum)
+                    self.multi_pros[t] *= (self.topic_word_count[t][word] + self.beta + self.occurrence_to_index_count[d][
+                        w] - 1) / (self.sum_topic_word_count[t] + w + self.beta_sum)
 
             # print self.multiPros
-            topic = self.nextDiscrete(self.multiPros)
+            topic = self.next_discrete(self.multi_pros)
             # print topic
 
-            self.docTopicCount[topic] += 1
+            self.document_topic_count[topic] += 1
 
-            for w in range(docSize):
+            for w in range(doc_size):
                 word = document[w]
-                self.topicWordCount[topic][word] += 1
-                self.sumTopicWordCount[topic] += 1
+                self.topic_word_count[topic][word] += 1
+                self.sum_topic_word_count[topic] += 1
 
-            self.topicAssignments[d] = topic
+            self.topic_assignments[d] = topic
 
     def inference(self):
-        self.multiPros = [0 for x in range(self.ntopics)]
-        [self.sampleInSingleIteration(x) for x in range(self.niters)]
+        self.multi_pros = [0 for x in range(self.number_of_topics)]
+        [self.sample_in_single_iteration(x) for x in range(self.number_of_iterations)]
 
-    def writeTopicAssignments(self):
+    def write_topic_assignments(self):
         file = open(self.output + self.name + ".topicAssignments", "w")
         # for i in range(self.numDocuments):
-        [file.write(str(self.topicAssignments[i]) + "\n") for i in range(self.numDocuments)]
+        [file.write(str(self.topic_assignments[i]) + "\n") for i in range(self.number_of_documents)]
 
-    def writeTopTopicalWords(self):
+    def write_top_topical_words(self):
         file = open(self.output + self.name + ".topWords", "w")
-        for t in range(self.ntopics):
-            wordCount = {w: self.topicWordCount[t][w] for w in range(len(self.word2IdVocabulary))}
+        for t in range(self.number_of_topics):
+            word_count = {w: self.topic_word_count[t][w] for w in range(len(self.word_to_id))}
 
             count = 0
             string = "Topic " + str(t) + ": "
 
-            for index in sorted(wordCount, key=wordCount.get, reverse=True):
-                string += self.id2WordVocabulary[index] + " "
+            for index in sorted(word_count, key=word_count.get, reverse=True):
+                string += self.id_to_word[index] + " "
                 count += 1
-                if count >= self.twords:
+                if count >= self.number_of_top_words:
                     file.write(string + "\n")
                     # print string
                     break

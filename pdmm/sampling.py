@@ -111,7 +111,8 @@ class GibbsSamplingDMM(object):
 
                 for word_index in range(doc_size):
                     word = document[word_index]
-                    self.multi_pros[topic_index] *= (self.topic_word_count[topic_index][word] + self.beta + self.occurrence_to_index_count[document_index][
+                    self.multi_pros[topic_index] *= (self.topic_word_count[topic_index][word] + self.beta +
+                                                     self.occurrence_to_index_count[document_index][
                         word_index] - 1) / (self.sum_topic_word_count[topic_index] + word_index + self.beta_sum)
 
             # print self.multiPros

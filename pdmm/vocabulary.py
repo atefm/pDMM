@@ -1,0 +1,3 @@
+"""
+Contains the Vocabulary class.
+"""

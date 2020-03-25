@@ -195,5 +195,5 @@ class GibbsSamplingDMM(object):
             for topic_index in range(self.number_of_topics):
                 top_words = self.get_top_words_for_topic(topic_index, number_of_top_words=number_of_top_words)
 
-                line = "Topic {}: {}\n".format(topic_index, " ".join(top_words))
+                line = "Topic {}: {} \n".format(topic_index, " ".join(top_words))
                 wf.write(line)

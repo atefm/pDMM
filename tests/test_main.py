@@ -1,7 +1,6 @@
 """
 Tests for the command line.
 """
-from __future__ import print_function, division
 import os
 import random
 import tempfile

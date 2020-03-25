@@ -33,7 +33,7 @@ class GibbsSamplingDMM(object):
             document = []
             word_occurrence_to_index_in_doc_count = {}
             word_occurrence_to_index_in_doc = []
-            if doc.rstrip != None:
+            if doc.rstrip is not None:
                 words = doc.rstrip().split()
                 for word in words:
 
@@ -76,7 +76,8 @@ class GibbsSamplingDMM(object):
 
             self.topic_assignments.append(topic)
 
-    def next_discrete(self, a):
+    @staticmethod
+    def next_discrete(a):
         b = 0.
 
         for i in range(len(a)):
@@ -87,7 +88,7 @@ class GibbsSamplingDMM(object):
         b = 0.
         for i in range(len(a)):
             b += a[i]
-            if (b > r):
+            if b > r:
                 return i
         return len(a) - 1
 
@@ -130,23 +131,22 @@ class GibbsSamplingDMM(object):
         [self.sample_in_single_iteration(x) for x in range(self.number_of_iterations)]
 
     def write_topic_assignments(self):
-        file = open(self.output + self.name + ".topicAssignments", "w")
-        # for i in range(self.numDocuments):
-        [file.write(str(self.topic_assignments[i]) + "\n") for i in range(self.number_of_documents)]
+        with open(self.output + self.name + ".topicAssignments", "w") as wf:
+            # for i in range(self.numDocuments):
+            [wf.write(str(self.topic_assignments[i]) + "\n") for i in range(self.number_of_documents)]
 
     def write_top_topical_words(self):
-        file = open(self.output + self.name + ".topWords", "w")
-        for t in range(self.number_of_topics):
-            word_count = {w: self.topic_word_count[t][w] for w in range(len(self.word_to_id))}
+        with open(self.output + self.name + ".topWords", "w") as wf:
+            for t in range(self.number_of_topics):
+                word_count = {w: self.topic_word_count[t][w] for w in range(len(self.word_to_id))}
 
-            count = 0
-            string = "Topic " + str(t) + ": "
+                count = 0
+                string = "Topic " + str(t) + ": "
 
-            for index in sorted(word_count, key=word_count.get, reverse=True):
-                string += self.id_to_word[index] + " "
-                count += 1
-                if count >= self.number_of_top_words:
-                    file.write(string + "\n")
-                    # print string
-                    break
-        file.close()
+                for index in sorted(word_count, key=word_count.get, reverse=True):
+                    string += self.id_to_word[index] + " "
+                    count += 1
+                    if count >= self.number_of_top_words:
+                        wf.write(string + "\n")
+                        # print string
+                        break

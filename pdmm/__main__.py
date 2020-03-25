@@ -3,7 +3,7 @@ import argparse
 import os
 import sys
 
-from sampling import GibbsSamplingDMM
+from .sampling import GibbsSamplingDMM
 
 
 def is_valid_file(parser, data_file):

@@ -2,18 +2,6 @@ import random
 
 
 class GibbsSamplingDMM(object):
-    number_of_documents = 0
-    number_of_words_in_corpus = 0
-    word_to_id = {}
-    id_to_word = {}
-    documents = []
-    occurrence_to_index_count = []
-    topic_assignments = []
-    document_topic_count = []
-    topic_word_count = []
-    sum_topic_word_count = []
-    multi_pros = []
-    beta_sum = 0.
 
     def __init__(self, parameters):
         super(GibbsSamplingDMM, self).__init__()
@@ -25,6 +13,19 @@ class GibbsSamplingDMM(object):
         self.number_of_iterations = int(parameters.niters)
         self.number_of_top_words = int(parameters.twords)
         self.name = parameters.name
+
+        self.number_of_documents = 0
+        self.number_of_words_in_corpus = 0
+        self.word_to_id = {}
+        self.id_to_word = {}
+        self.documents = []
+        self.occurrence_to_index_count = []
+        self.topic_assignments = []
+        self.document_topic_count = []
+        self.topic_word_count = []
+        self.sum_topic_word_count = []
+        self.multi_pros = []
+        self.beta_sum = 0.
 
     def analyse_corpus(self):
         index_word = 0

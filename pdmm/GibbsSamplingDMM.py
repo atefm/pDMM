@@ -64,15 +64,15 @@ class GibbsSamplingDMM(object):
         self.document_topic_count = [0 for __ in range(self.number_of_topics)]
         self.sum_topic_word_count = [0 for __ in range(self.number_of_topics)]
 
-        for i in range(self.number_of_topics):
+        for __ in range(self.number_of_topics):
             self.topic_word_count.append([0 for __ in range(len(self.word_to_id))])
 
-        for i in range(self.number_of_documents):
+        for document_index in range(self.number_of_documents):
             topic = random.randint(0, self.number_of_topics - 1)
             self.document_topic_count[topic] += 1
 
-            for j in range(len(self.documents[i])):
-                self.topic_word_count[topic][self.documents[i][j]] += 1
+            for word_index in range(len(self.documents[document_index])):
+                self.topic_word_count[topic][self.documents[document_index][word_index]] += 1
                 self.sum_topic_word_count[topic] += 1
 
             self.topic_assignments.append(topic)
@@ -95,24 +95,24 @@ class GibbsSamplingDMM(object):
 
     def sample_in_single_iteration(self, x):
         print ("iteration: " + str(x))
-        for d in range(self.number_of_documents):
-            topic = self.topic_assignments[d]
+        for document_index in range(self.number_of_documents):
+            topic = self.topic_assignments[document_index]
             self.document_topic_count[topic] -= 1
-            doc_size = len(self.documents[d])
-            document = self.documents[d]
+            doc_size = len(self.documents[document_index])
+            document = self.documents[document_index]
 
-            for w in range(doc_size):
-                word = document[w]
+            for word_index in range(doc_size):
+                word = document[word_index]
                 self.topic_word_count[topic][word] -= 1
                 self.sum_topic_word_count[topic] -= 1
 
-            for t in range(self.number_of_topics):
-                self.multi_pros[t] = self.document_topic_count[t] + self.alpha
+            for topic_index in range(self.number_of_topics):
+                self.multi_pros[topic_index] = self.document_topic_count[topic_index] + self.alpha
 
-                for w in range(doc_size):
-                    word = document[w]
-                    self.multi_pros[t] *= (self.topic_word_count[t][word] + self.beta + self.occurrence_to_index_count[d][
-                        w] - 1) / (self.sum_topic_word_count[t] + w + self.beta_sum)
+                for word_index in range(doc_size):
+                    word = document[word_index]
+                    self.multi_pros[topic_index] *= (self.topic_word_count[topic_index][word] + self.beta + self.occurrence_to_index_count[document_index][
+                        word_index] - 1) / (self.sum_topic_word_count[topic_index] + word_index + self.beta_sum)
 
             # print self.multiPros
             topic = self.next_discrete(self.multi_pros)
@@ -120,12 +120,12 @@ class GibbsSamplingDMM(object):
 
             self.document_topic_count[topic] += 1
 
-            for w in range(doc_size):
-                word = document[w]
+            for word_index in range(doc_size):
+                word = document[word_index]
                 self.topic_word_count[topic][word] += 1
                 self.sum_topic_word_count[topic] += 1
 
-            self.topic_assignments[d] = topic
+            self.topic_assignments[document_index] = topic
 
     def inference(self):
         self.multi_pros = [0 for __ in range(self.number_of_topics)]
@@ -134,16 +134,16 @@ class GibbsSamplingDMM(object):
 
     def write_topic_assignments(self):
         with open(self.output + self.name + ".topicAssignments", "w") as wf:
-            for i in range(self.number_of_documents):
-                wf.write(str(self.topic_assignments[i]) + "\n")
+            for document_index in range(self.number_of_documents):
+                wf.write(str(self.topic_assignments[document_index]) + "\n")
 
     def write_top_topical_words(self):
         with open(self.output + self.name + ".topWords", "w") as wf:
-            for t in range(self.number_of_topics):
-                word_count = {w: self.topic_word_count[t][w] for w in range(len(self.word_to_id))}
+            for topic_index in range(self.number_of_topics):
+                word_count = {w: self.topic_word_count[topic_index][w] for w in range(len(self.word_to_id))}
 
                 count = 0
-                string = "Topic " + str(t) + ": "
+                string = "Topic " + str(topic_index) + ": "
 
                 for index in sorted(word_count, key=word_count.get, reverse=True):
                     string += self.id_to_word[index] + " "

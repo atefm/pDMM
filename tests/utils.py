@@ -11,6 +11,6 @@ def read_contents_from_path(file_path):
     return contents
 
 
-def old_randint(a, b):
+def python_2_randint(a, b):
     """Equivalent to random.randint in Python2."""
     return a + int(random.random() * (b + 1 - a))

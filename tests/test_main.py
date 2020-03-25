@@ -7,10 +7,11 @@ import random
 import tempfile
 import unittest
 
+import pdmm.sampling
 from pdmm.sampling import GibbsSamplingDMM
 from pdmm.__main__ import check_arg
 
-from .utils import read_contents_from_path
+from .utils import read_contents_from_path, python_2_randint
 
 
 class CommandLineTests(unittest.TestCase):
@@ -18,6 +19,7 @@ class CommandLineTests(unittest.TestCase):
     def test_overall_output(self):
         """Test that the output is correct."""
         random.seed(1)
+        pdmm.sampling.random.randint = python_2_randint
         temp_dir = tempfile.gettempdir() + "/"
         arg_string = "--corpus {} --output {} --niters {}".format(
             "tests/data/sample_data",

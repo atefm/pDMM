@@ -1,3 +1,4 @@
+from __future__ import print_function, division
 import argparse
 import os
 import sys
@@ -33,6 +34,6 @@ if __name__ == '__main__':
     model.topic_assignment_initialise()
     model.inference()
 
-    print "Writing Results"
+    print("Writing Results")
     model.write_top_topical_words()
     model.write_topic_assignments()

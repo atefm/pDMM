@@ -1,3 +1,4 @@
+from __future__ import print_function, division
 import random
 
 
@@ -94,7 +95,7 @@ class GibbsSamplingDMM(object):
         return len(a) - 1
 
     def sample_in_single_iteration(self, x):
-        print ("iteration: " + str(x))
+        print("iteration: " + str(x))
         for document_index in range(self.number_of_documents):
             topic = self.topic_assignments[document_index]
             self.document_topic_count[topic] -= 1

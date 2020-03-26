@@ -21,10 +21,9 @@ def main(parameters):
         parameters.number_of_topics,
         parameters.alpha,
         parameters.beta,
-        parameters.number_of_iterations
     )
     model.topic_assignment_initialise()
-    model.inference()
+    model.inference(parameters.number_of_iterations)
 
     if parameters.output_path:
         logger.debug("Writing results to file")

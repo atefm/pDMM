@@ -79,73 +79,6 @@ class GibbsSamplingDMM:
         for document_index, new_topic in enumerate(self.document_topic_assignments):
             self._assign_document_to_topic(document_index, new_topic)
 
-    def _assign_document_to_topic(self, document_index, topic_index):
-        """Assign a document to a topic."""
-        document = self.corpus.documents[document_index]
-        self.number_of_total_words_in_each_topic[topic_index] += len(document)
-        self.number_of_each_word_in_each_topic[topic_index] += self.corpus.word_counts_in_documents[document_index]
-
-    def _unassign_document_from_topic(self, document_index, topic_index):
-        """Un-assign a document from a topic."""
-        document = self.corpus.documents[document_index]
-        self.number_of_total_words_in_each_topic[topic_index] -= len(document)
-        self.number_of_each_word_in_each_topic[topic_index] -= self.corpus.word_counts_in_documents[document_index]
-
-    @staticmethod
-    def next_discrete(a):
-        b = 0.
-
-        for i in range(len(a)):
-            b += a[i]
-
-        r = random.uniform(0., 1.) * b
-
-        b = 0.
-        for i in range(len(a)):
-            b += a[i]
-            if b > r:
-                return i
-        return len(a) - 1
-
-    def _sample_in_single_iteration(self):
-        """
-        Sample in a single iteration.
-
-        Notes
-        -----
-        - This implements the second 'for' loop from the algorithm
-         in Yin's paper [1].
-        - These steps MUST be dpne in series.
-        """
-        for document_index, document in enumerate(self.corpus.documents):
-            current_topic_index = self.document_topic_assignments[document_index]
-            self.number_of_documents_in_each_topic[current_topic_index] -= 1
-            self._unassign_document_from_topic(document_index, current_topic_index)
-
-            self._update_topic_weights_for_document(document_index)
-
-            new_topic_index = self.next_discrete(self.topic_weights)
-
-            self.number_of_documents_in_each_topic[new_topic_index] += 1
-            self._assign_document_to_topic(document_index, new_topic_index)
-            self.document_topic_assignments[document_index] = new_topic_index
-
-    def _update_topic_weights_for_document(self, document_index):
-        """Update the topic weights for a particular document."""
-        document = self.corpus.documents[document_index]
-        self.topic_weights = self.number_of_documents_in_each_topic + self.alpha
-        occurrence_to_index_count_for_document = self.corpus.occurrence_to_index_count[document_index]
-
-        numerators = (self.number_of_each_word_in_each_topic.take(document, axis=1) + self.beta +
-                      occurrence_to_index_count_for_document - 1)
-
-        range_mask = np.arange(len(document)).repeat(self.number_of_topics).reshape(
-            len(document), self.number_of_topics)
-        denominators = range_mask + self.number_of_total_words_in_each_topic + self.corpus.vocab.size * self.beta
-
-        fractions = numerators / denominators.T
-        self.topic_weights *= fractions.prod(axis=1)
-
     def inference(self, number_of_iterations):
         """
         Run inference for a number of iterations.
@@ -164,20 +97,6 @@ class GibbsSamplingDMM:
         for iteration in range(1, number_of_iterations + 1):
             self.logger.debug("Sampling in iteration {} of {}".format(iteration, number_of_iterations))
             self._sample_in_single_iteration()
-
-    def save_topic_assignments_to_file(self, file_path):
-        """
-        Save the topic assignments to a file.
-
-        Parameters
-        ----------
-        file_path : str
-            The location at which to save the file.
-        """
-        with open(file_path, "w") as wf:
-            for document_index in range(self.corpus.number_of_documents):
-                line = str(self.document_topic_assignments[document_index]) + "\n"
-                wf.write(line)
 
     def get_top_words_for_topic(self, topic_index, number_of_top_words=20):
         """
@@ -229,3 +148,84 @@ class GibbsSamplingDMM:
 
                 line = "Topic {}: {} \n".format(topic_index, " ".join(top_words))
                 wf.write(line)
+
+    def save_topic_assignments_to_file(self, file_path):
+        """
+        Save the topic assignments to a file.
+
+        Parameters
+        ----------
+        file_path : str
+            The location at which to save the file.
+        """
+        with open(file_path, "w") as wf:
+            for document_index in range(self.corpus.number_of_documents):
+                line = str(self.document_topic_assignments[document_index]) + "\n"
+                wf.write(line)
+
+    def _sample_in_single_iteration(self):
+        """
+        Sample in a single iteration.
+
+        Notes
+        -----
+        - This implements the second 'for' loop from the algorithm
+         in Yin's paper [1].
+        - These steps MUST be dpne in series.
+        """
+        for document_index, document in enumerate(self.corpus.documents):
+            current_topic_index = self.document_topic_assignments[document_index]
+            self.number_of_documents_in_each_topic[current_topic_index] -= 1
+            self._unassign_document_from_topic(document_index, current_topic_index)
+
+            self._update_topic_weights_for_document(document_index)
+
+            new_topic_index = self.next_discrete(self.topic_weights)
+
+            self.number_of_documents_in_each_topic[new_topic_index] += 1
+            self._assign_document_to_topic(document_index, new_topic_index)
+            self.document_topic_assignments[document_index] = new_topic_index
+
+    def _update_topic_weights_for_document(self, document_index):
+        """Update the topic weights for a particular document."""
+        document = self.corpus.documents[document_index]
+        self.topic_weights = self.number_of_documents_in_each_topic + self.alpha
+        occurrence_to_index_count_for_document = self.corpus.occurrence_to_index_count[document_index]
+
+        numerators = (self.number_of_each_word_in_each_topic.take(document, axis=1) + self.beta +
+                      occurrence_to_index_count_for_document - 1)
+
+        range_mask = np.arange(len(document)).repeat(self.number_of_topics).reshape(
+            len(document), self.number_of_topics)
+        denominators = range_mask + self.number_of_total_words_in_each_topic + self.corpus.vocab.size * self.beta
+
+        fractions = numerators / denominators.T
+        self.topic_weights *= fractions.prod(axis=1)
+
+    def _assign_document_to_topic(self, document_index, topic_index):
+        """Assign a document to a topic."""
+        document = self.corpus.documents[document_index]
+        self.number_of_total_words_in_each_topic[topic_index] += len(document)
+        self.number_of_each_word_in_each_topic[topic_index] += self.corpus.word_counts_in_documents[document_index]
+
+    def _unassign_document_from_topic(self, document_index, topic_index):
+        """Un-assign a document from a topic."""
+        document = self.corpus.documents[document_index]
+        self.number_of_total_words_in_each_topic[topic_index] -= len(document)
+        self.number_of_each_word_in_each_topic[topic_index] -= self.corpus.word_counts_in_documents[document_index]
+
+    @staticmethod
+    def next_discrete(a):
+        b = 0.
+
+        for i in range(len(a)):
+            b += a[i]
+
+        r = random.uniform(0., 1.) * b
+
+        b = 0.
+        for i in range(len(a)):
+            b += a[i]
+            if b > r:
+                return i
+        return len(a) - 1

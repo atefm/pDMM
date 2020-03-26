@@ -51,7 +51,7 @@ class Vocabulary:
                 wf.write(line)
 
     @classmethod
-    def create_from_list_of_words(cls, list_of_words):
+    def from_list_of_words(cls, list_of_words):
         """Create a vocabulary from a list of words."""
         vocab = cls()
         for word in list_of_words:

@@ -6,6 +6,7 @@ import random
 import tempfile
 import unittest
 
+from pdmm.corpus import Corpus
 import pdmm.sampling
 from pdmm.sampling import GibbsSamplingDMM
 from pdmm.__main__ import check_arg
@@ -20,20 +21,29 @@ class CommandLineTests(unittest.TestCase):
         random.seed(1)
         pdmm.sampling.random.randint = python_2_randint
         temp_dir = tempfile.gettempdir() + "/"
-        arg_string = "--corpus {} --output {} --niters {}".format(
+        arg_string = "--corpus {} --output {} --iterations {}".format(
             "tests/data/sample_data",
             temp_dir,
             50,
         )
         arguments_components = arg_string.split()
         parsed_args = check_arg(arguments_components)
-        model = GibbsSamplingDMM(parsed_args)
-        model.analyse_corpus()
+        corpus = Corpus.from_document_file("tests/data/sample_data")
+        model = GibbsSamplingDMM(
+            corpus,
+            temp_dir,
+            20,
+            0.1,
+            0.001,
+            50,
+            20,
+            "model"
+        )
         model.topic_assignment_initialise()
         model.inference()
 
-        model.save_top_topical_words_to_file(parsed_args.output + parsed_args.name + ".topWords")
-        model.save_topic_assignments_to_file(parsed_args.output + parsed_args.name + ".topicAssignments")
+        model.save_top_topical_words_to_file(parsed_args.output_path + parsed_args.name + ".topWords")
+        model.save_topic_assignments_to_file(parsed_args.output_path + parsed_args.name + ".topicAssignments")
 
         expected_top_words = read_contents_from_path("tests/data/topWords")
         expected_topic_assignments = read_contents_from_path("tests/data/topicAssignments")

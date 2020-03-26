@@ -103,8 +103,7 @@ class GibbsSamplingDMM:
                 return i
         return len(a) - 1
 
-    def sample_in_single_iteration(self, x):
-        print("iteration: " + str(x))
+    def _sample_in_single_iteration(self):
         vocabulary_size = self.corpus.vocab.size
         for document_index in range(self.corpus.number_of_documents):
             topic = self.document_topic_assignments[document_index]
@@ -139,10 +138,24 @@ class GibbsSamplingDMM:
 
             self.document_topic_assignments[document_index] = topic
 
-    def inference(self):
+    def inference(self, number_of_iterations):
+        """
+        Run inference for a number of iterations.
+
+        Parameters
+        ----------
+        number_of_iterations : int
+            The number of iterations to run.
+
+        Notes
+        -----
+        - This implements the second 'for' loop from the algorithm
+          in Yin's paper [1].
+        """
         self.topic_weights = [0 for __ in range(self.number_of_topics)]
-        for iteration in range(self.number_of_iterations):
-            self.sample_in_single_iteration(iteration)
+        for iteration in range(1, number_of_iterations + 1):
+            self.logger.debug("Sampling in iteration {} of {}".format(iteration, number_of_iterations))
+            self._sample_in_single_iteration()
 
     def save_topic_assignments_to_file(self, file_path):
         """

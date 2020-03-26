@@ -4,6 +4,8 @@ Contains the GibbsSamplingDMM class.
 import logging
 import random
 
+import numpy as np
+
 
 class GibbsSamplingDMM:
     """
@@ -57,11 +59,12 @@ class GibbsSamplingDMM:
         self.alpha = alpha
         self.beta = beta
 
-        self.document_topic_assignments = []
-        self.number_of_documents_in_each_topic = []
-        self.number_of_each_word_in_each_topic = []
-        self.number_of_total_words_in_each_topic = []
-        self.topic_weights = []
+        self.document_topic_assignments = np.zeros((self.corpus.number_of_documents,))
+        self.number_of_documents_in_each_topic = np.zeros((self.number_of_topics,))
+
+        self.number_of_each_word_in_each_topic = np.zeros((self.number_of_topics, self.corpus.vocab.size))
+        self.number_of_total_words_in_each_topic = np.zeros((self.number_of_topics,))
+        self.topic_weights = np.ones((self.number_of_topics,))
 
         self.logger = logging.getLogger(__name__)
 

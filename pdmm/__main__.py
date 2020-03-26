@@ -22,7 +22,7 @@ def main(parameters):
         parameters.alpha,
         parameters.beta,
     )
-    model.topic_assignment_initialise()
+    model.randomly_initialise_topic_assignment()
     model.inference(parameters.number_of_iterations)
 
     if parameters.output_path:

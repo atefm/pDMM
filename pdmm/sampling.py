@@ -173,7 +173,7 @@ class GibbsSamplingDMM:
         -----
         - This implements the second 'for' loop from the algorithm
          in Yin's paper [1].
-        - These steps MUST be dpne in series.
+        - These steps MUST be done in series.
         """
         for document_index, document in enumerate(self.corpus.documents):
             current_topic_index = self.document_topic_assignments[document_index]

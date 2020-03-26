@@ -19,8 +19,6 @@ class GibbsSamplingDMM:
         The hyper-parameter alpha
     beta : float
         The hyper-parameter beta.
-    number_of_iterations : int
-        The number of iterations of inference.
     document_topic_assignments : list[int]
         A list of the topic indexes, where the ith element
         is the topic index to which document i has been assigned.
@@ -36,7 +34,7 @@ class GibbsSamplingDMM:
     logger : logging.Logger
         The logger for the class.
     """
-    def __init__(self, corpus, number_of_topics=20, alpha=0.1, beta=0.001, number_of_iterations=2000):
+    def __init__(self, corpus, number_of_topics=20, alpha=0.1, beta=0.001):
         """
         Initialise self.
 
@@ -53,14 +51,11 @@ class GibbsSamplingDMM:
             The hyper-parameter alpha
         beta : float, defaults to 0.001
             The hyper-parameter beta.
-        number_of_iterations : int, defaults to 2000
-            The number of iterations of inference.
         """
         self.corpus = corpus
         self.number_of_topics = number_of_topics
         self.alpha = alpha
         self.beta = beta
-        self.number_of_iterations = number_of_iterations
 
         self.document_topic_assignments = []
         self.number_of_documents_in_each_topic = []

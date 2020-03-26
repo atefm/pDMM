@@ -1,10 +1,9 @@
 import random
 
 
-class GibbsSamplingDMM(object):
+class GibbsSamplingDMM:
 
     def __init__(self, parameters):
-        super(GibbsSamplingDMM, self).__init__()
         self.corpus = parameters.corpus
         self.output = parameters.output
         self.number_of_topics = int(parameters.ntopics)

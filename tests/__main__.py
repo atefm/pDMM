@@ -7,6 +7,7 @@ import coverage
 
 
 def run_tests():
+    """Run all of the tests."""
     test_loader = unittest.TestLoader()
     all_tests = test_loader.discover(".")
     test_runner = unittest.TextTestRunner()

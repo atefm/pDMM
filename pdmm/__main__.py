@@ -29,9 +29,10 @@ def main(parameters):
     model.topic_assignment_initialise()
     model.inference()
 
-    logger.debug("Writing Results")
-    model.save_top_topical_words_to_file(parameters.output_path + parameters.name + ".topWords")
-    model.save_topic_assignments_to_file(parameters.output_path + parameters.name + ".topicAssignments")
+    if parameters.output_path:
+        logger.debug("Writing results to file")
+        model.save_top_topical_words_to_file(os.path.join(parameters.output_path, "topWords"))
+        model.save_topic_assignments_to_file(os.path.join(parameters.output_path, "topicAssignments"))
 
 
 def check_arg(args=None):

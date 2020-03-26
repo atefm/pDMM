@@ -19,8 +19,6 @@ class GibbsSamplingDMM:
         The hyper-parameter alpha
     beta : float
         The hyper-parameter beta.
-    number_of_iterations : int
-        The number of iterations of inference.
     document_topic_assignments : list[int]
         A list of the topic indexes, where the ith element
         is the topic index to which document i has been assigned.
@@ -36,7 +34,7 @@ class GibbsSamplingDMM:
     logger : logging.Logger
         The logger for the class.
     """
-    def __init__(self, corpus, number_of_topics=20, alpha=0.1, beta=0.001, number_of_iterations=2000):
+    def __init__(self, corpus, number_of_topics=20, alpha=0.1, beta=0.001):
         """
         Initialise self.
 
@@ -53,14 +51,11 @@ class GibbsSamplingDMM:
             The hyper-parameter alpha
         beta : float, defaults to 0.001
             The hyper-parameter beta.
-        number_of_iterations : int, defaults to 2000
-            The number of iterations of inference.
         """
         self.corpus = corpus
         self.number_of_topics = number_of_topics
         self.alpha = alpha
         self.beta = beta
-        self.number_of_iterations = number_of_iterations
 
         self.document_topic_assignments = []
         self.number_of_documents_in_each_topic = []
@@ -103,8 +98,7 @@ class GibbsSamplingDMM:
                 return i
         return len(a) - 1
 
-    def sample_in_single_iteration(self, x):
-        print("iteration: " + str(x))
+    def _sample_in_single_iteration(self):
         vocabulary_size = self.corpus.vocab.size
         for document_index in range(self.corpus.number_of_documents):
             topic = self.document_topic_assignments[document_index]
@@ -139,10 +133,24 @@ class GibbsSamplingDMM:
 
             self.document_topic_assignments[document_index] = topic
 
-    def inference(self):
+    def inference(self, number_of_iterations):
+        """
+        Run inference for a number of iterations.
+
+        Parameters
+        ----------
+        number_of_iterations : int
+            The number of iterations to run.
+
+        Notes
+        -----
+        - This implements the second 'for' loop from the algorithm
+          in Yin's paper [1].
+        """
         self.topic_weights = [0 for __ in range(self.number_of_topics)]
-        for iteration in range(self.number_of_iterations):
-            self.sample_in_single_iteration(iteration)
+        for iteration in range(1, number_of_iterations + 1):
+            self.logger.debug("Sampling in iteration {} of {}".format(iteration, number_of_iterations))
+            self._sample_in_single_iteration()
 
     def save_topic_assignments_to_file(self, file_path):
         """

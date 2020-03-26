@@ -82,6 +82,18 @@ class GibbsSamplingDMM:
 
             self.document_topic_assignments.append(topic)
 
+    def _assign_document_to_topic(self, document_index, topic_index):
+        """Assign a document to a topic."""
+        document = self.corpus.documents[document_index]
+        self.number_of_total_words_in_each_topic[topic_index] += len(document)
+        self.number_of_each_word_in_each_topic[topic_index] += self.corpus.word_counts_in_documents[document_index]
+
+    def _unassign_document_from_topic(self, document_index, topic_index):
+        """Un-assign a document from a topic."""
+        document = self.corpus.documents[document_index]
+        self.number_of_total_words_in_each_topic[topic_index] -= len(document)
+        self.number_of_each_word_in_each_topic[topic_index] -= self.corpus.word_counts_in_documents[document_index]
+
     @staticmethod
     def next_discrete(a):
         b = 0.

@@ -32,6 +32,17 @@ class Corpus:
         self.word_counts_in_documents = word_counts_in_documents
         self.vocab = vocabulary
 
+    def __eq__(self, other):
+        if type(self) != type(other):
+            return False
+
+        return all([
+            self.documents == other.documents,
+            self.occurrence_to_index_count == other.occurrence_to_index_count,
+            np.all(self.word_counts_in_documents == other.word_counts_in_documents),
+            self.vocab == other.vocab
+        ])
+
     @property
     def number_of_documents(self):
         """Return the number of documents in the corpus."""

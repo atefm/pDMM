@@ -57,3 +57,8 @@ class CorpusTest(unittest.TestCase):
         corpus_from_file = Corpus.from_document_file(file_path)
         corpus_from_documents = Corpus.from_documents_as_lists_of_words(self.list_of_documents)
         self.assertEqual(corpus_from_documents, corpus_from_file)
+
+    def test_bad_equality(self):
+        """Test that a Corpus instance is not equal to an integer."""
+        corpus = Corpus.from_documents_as_lists_of_words(self.list_of_documents)
+        self.assertFalse(corpus == 5)

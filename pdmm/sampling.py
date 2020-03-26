@@ -1,9 +1,12 @@
+"""
+Contains the GibbsSamplingDMM class.
+"""
 import random
 
 
 class GibbsSamplingDMM:
 
-    def __init__(self, corpus, number_of_topics, alpha, beta, number_of_iterations):
+    def __init__(self, corpus, number_of_topics=20, alpha=0.1, beta=0.001, number_of_iterations=2000):
         self.corpus = corpus
         self.number_of_topics = number_of_topics
         self.alpha = alpha

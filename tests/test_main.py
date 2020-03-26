@@ -6,6 +6,7 @@ import random
 import tempfile
 import unittest
 
+from pdmm.corpus import Corpus
 import pdmm.sampling
 from pdmm.sampling import GibbsSamplingDMM
 from pdmm.__main__ import check_arg
@@ -27,8 +28,9 @@ class CommandLineTests(unittest.TestCase):
         )
         arguments_components = arg_string.split()
         parsed_args = check_arg(arguments_components)
+        corpus = Corpus.from_document_file("tests/data/sample_data")
         model = GibbsSamplingDMM(
-            "tests/data/sample_data",
+            corpus,
             temp_dir,
             20,
             0.1,
@@ -37,7 +39,6 @@ class CommandLineTests(unittest.TestCase):
             20,
             "model"
         )
-        model.analyse_corpus()
         model.topic_assignment_initialise()
         model.inference()
 

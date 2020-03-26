@@ -70,8 +70,11 @@ class GibbsSamplingDMM:
 
     def randomly_initialise_topic_assignment(self):
         """Randomly assign topics to each of the documents."""
-        self.document_topic_assignments = np.array([random.randint(0, self.number_of_topics - 1) for __ in range(self.corpus.number_of_documents)])
-        self.number_of_documents_in_each_topic = np.bincount(self.document_topic_assignments, minlength=self.number_of_topics)
+        self.document_topic_assignments = np.array(
+            [random.randint(0, self.number_of_topics - 1) for __ in range(self.corpus.number_of_documents)]
+        )
+        self.number_of_documents_in_each_topic = np.bincount(self.document_topic_assignments,
+                                                             minlength=self.number_of_topics)
 
         for document_index, new_topic in enumerate(self.document_topic_assignments):
             self._assign_document_to_topic(document_index, new_topic)
@@ -136,7 +139,8 @@ class GibbsSamplingDMM:
         numerators = (self.number_of_each_word_in_each_topic.take(document, axis=1) + self.beta +
                       occurrence_to_index_count_for_document - 1)
 
-        range_mask = np.arange(len(document)).repeat(self.number_of_topics).reshape(len(document), self.number_of_topics)
+        range_mask = np.arange(len(document)).repeat(self.number_of_topics).reshape(
+            len(document), self.number_of_topics)
         denominators = range_mask + self.number_of_total_words_in_each_topic + self.corpus.vocab.size * self.beta
 
         fractions = numerators / denominators.T

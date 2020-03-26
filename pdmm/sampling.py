@@ -6,6 +6,8 @@ import random
 
 import numpy as np
 
+from .utils import sample_from_multinomial_and_mutate_weights
+
 
 class GibbsSamplingDMM:
     """
@@ -180,7 +182,8 @@ class GibbsSamplingDMM:
 
             self._update_topic_weights_for_document(document_index)
 
-            new_topic_index = self.next_discrete(self.topic_weights)
+            random_number = random.uniform(0, 1)
+            new_topic_index = sample_from_multinomial_and_mutate_weights(self.topic_weights, random_number)
 
             self.number_of_documents_in_each_topic[new_topic_index] += 1
             self._assign_document_to_topic(document_index, new_topic_index)
@@ -213,19 +216,3 @@ class GibbsSamplingDMM:
         document = self.corpus.documents[document_index]
         self.number_of_total_words_in_each_topic[topic_index] -= len(document)
         self.number_of_each_word_in_each_topic[topic_index] -= self.corpus.word_counts_in_documents[document_index]
-
-    @staticmethod
-    def next_discrete(a):
-        b = 0.
-
-        for i in range(len(a)):
-            b += a[i]
-
-        r = random.uniform(0., 1.) * b
-
-        b = 0.
-        for i in range(len(a)):
-            b += a[i]
-            if b > r:
-                return i
-        return len(a) - 1

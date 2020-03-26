@@ -33,8 +33,8 @@ class Corpus:
         self.vocab = vocabulary
 
     def __eq__(self, other):
-        if type(self) != type(other):
-            return False
+        if not type(other) == type(self):
+            raise TypeError("Can only compare to {} type.".format(type(self).__name__))
 
         return all([
             self.documents == other.documents,

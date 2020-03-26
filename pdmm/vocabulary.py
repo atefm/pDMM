@@ -51,6 +51,15 @@ class Vocabulary:
                 wf.write(line)
 
     @classmethod
+    def from_list_of_words(cls, list_of_words):
+        """Create a vocabulary from a list of words."""
+        vocab = cls()
+        for word in list_of_words:
+            vocab._add_new_word_and_return_id(word)
+
+        return vocab
+
+    @classmethod
     def load_from_file(cls, file_path):
         """Load an instance from a vocabulary file."""
         vocab = cls()

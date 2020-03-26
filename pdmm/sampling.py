@@ -3,10 +3,10 @@ import random
 
 class GibbsSamplingDMM:
 
-    def __init__(self, corpus, output, number_of_topics, alpha, beta,
+    def __init__(self, corpus_path, output_path, number_of_topics, alpha, beta,
                  number_of_iterations, number_of_top_words, name):
-        self.corpus = corpus
-        self.output = output
+        self.corpus = corpus_path
+        self.output = output_path
         self.number_of_topics = int(number_of_topics)
         self.alpha = float(alpha)
         self.beta = float(beta)

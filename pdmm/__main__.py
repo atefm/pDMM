@@ -29,7 +29,16 @@ def check_arg(args=None):
 
 if __name__ == '__main__':
     args = check_arg(sys.argv[1:])
-    model = GibbsSamplingDMM(args)
+    model = GibbsSamplingDMM(
+        args.corpus,
+        args.output,
+        args.ntopics,
+        args.alpha,
+        args.beta,
+        args.niters,
+        args.twords,
+        args.name
+    )
     model.analyse_corpus()
     model.topic_assignment_initialise()
     model.inference()

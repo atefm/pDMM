@@ -105,39 +105,32 @@ class GibbsSamplingDMM:
         return len(a) - 1
 
     def _sample_in_single_iteration(self):
-        vocabulary_size = self.corpus.vocab.size
-        for document_index in range(self.corpus.number_of_documents):
-            topic = self.document_topic_assignments[document_index]
-            self.number_of_documents_in_each_topic[topic] -= 1
-            doc_size = len(self.corpus.documents[document_index])
-            document = self.corpus.documents[document_index]
+        for document_index, document in enumerate(self.corpus.documents):
+            current_topic_index = self.document_topic_assignments[document_index]
+            self.number_of_documents_in_each_topic[current_topic_index] -= 1
+            self._unassign_document_from_topic(document_index, current_topic_index)
 
-            for word_index in range(doc_size):
-                word = document[word_index]
-                self.number_of_each_word_in_each_topic[topic][word] -= 1
-                self.number_of_total_words_in_each_topic[topic] -= 1
+            self._update_topic_weights_for_document(document_index)
 
-            for topic_index in range(self.number_of_topics):
-                self.topic_weights[topic_index] = self.number_of_documents_in_each_topic[topic_index] + self.alpha
+            new_topic_index = self.next_discrete(self.topic_weights)
 
-                for word_index in range(doc_size):
-                    word = document[word_index]
-                    self.topic_weights[topic_index] *= (self.number_of_each_word_in_each_topic[topic_index][word] + self.beta +
-                                                        self.corpus.occurrence_to_index_count[document_index][
-                        word_index] - 1) / (self.number_of_total_words_in_each_topic[topic_index] + word_index + vocabulary_size * self.beta)
+            self.number_of_documents_in_each_topic[new_topic_index] += 1
+            self._assign_document_to_topic(document_index, new_topic_index)
+            self.document_topic_assignments[document_index] = new_topic_index
 
-            # print self.multiPros
-            topic = self.next_discrete(self.topic_weights)
-            # print topic
+    def _update_topic_weights_for_document(self, document_index):
+        document = self.corpus.documents[document_index]
+        self.topic_weights = self.number_of_documents_in_each_topic + self.alpha
+        occurrence_to_index_count_for_document = self.corpus.occurrence_to_index_count[document_index]
 
-            self.number_of_documents_in_each_topic[topic] += 1
+        numerators = (self.number_of_each_word_in_each_topic.take(document, axis=1) + self.beta +
+                      occurrence_to_index_count_for_document - 1)
 
-            for word_index in range(doc_size):
-                word = document[word_index]
-                self.number_of_each_word_in_each_topic[topic][word] += 1
-                self.number_of_total_words_in_each_topic[topic] += 1
+        range_mask = np.arange(len(document)).repeat(self.number_of_topics).reshape(len(document), self.number_of_topics)
+        denominators = range_mask + self.number_of_total_words_in_each_topic + self.corpus.vocab.size * self.beta
 
-            self.document_topic_assignments[document_index] = topic
+        fractions = numerators / denominators.T
+        self.topic_weights *= fractions.prod(axis=1)
 
     def inference(self, number_of_iterations):
         """

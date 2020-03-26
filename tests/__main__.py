@@ -8,15 +8,15 @@ import coverage
 
 def run_tests():
     """Run all of the tests."""
+    cov = coverage.Coverage(source=["pdmm"])
+    cov.start()
+
     test_loader = unittest.TestLoader()
     all_tests = test_loader.discover(".")
     test_runner = unittest.TextTestRunner()
-
-    cov = coverage.Coverage(source=["pdmm"])
-    cov.start()
     test_runner.run(all_tests)
-    cov.stop()
 
+    cov.stop()
     cov.html_report()
 
 

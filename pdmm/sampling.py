@@ -68,22 +68,13 @@ class GibbsSamplingDMM:
 
         self.logger = logging.getLogger(__name__)
 
-    def topic_assignment_initialise(self):
-        self.number_of_documents_in_each_topic = [0 for __ in range(self.number_of_topics)]
-        self.number_of_total_words_in_each_topic = [0 for __ in range(self.number_of_topics)]
+    def randomly_initialise_topic_assignment(self):
+        """Randomly assign topics to each of the documents."""
+        self.document_topic_assignments = np.array([random.randint(0, self.number_of_topics - 1) for __ in range(self.corpus.number_of_documents)])
+        self.number_of_documents_in_each_topic = np.bincount(self.document_topic_assignments, minlength=self.number_of_topics)
 
-        for __ in range(self.number_of_topics):
-            self.number_of_each_word_in_each_topic.append([0 for __ in range(self.corpus.vocab.size)])
-
-        for document_index in range(self.corpus.number_of_documents):
-            topic = random.randint(0, self.number_of_topics - 1)
-            self.number_of_documents_in_each_topic[topic] += 1
-
-            for word_index in range(len(self.corpus.documents[document_index])):
-                self.number_of_each_word_in_each_topic[topic][self.corpus.documents[document_index][word_index]] += 1
-                self.number_of_total_words_in_each_topic[topic] += 1
-
-            self.document_topic_assignments.append(topic)
+        for document_index, new_topic in enumerate(self.document_topic_assignments):
+            self._assign_document_to_topic(document_index, new_topic)
 
     def _assign_document_to_topic(self, document_index, topic_index):
         """Assign a document to a topic."""

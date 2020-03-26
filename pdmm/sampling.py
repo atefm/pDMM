@@ -105,6 +105,15 @@ class GibbsSamplingDMM:
         return len(a) - 1
 
     def _sample_in_single_iteration(self):
+        """
+        Sample in a single iteration.
+
+        Notes
+        -----
+        - This implements the second 'for' loop from the algorithm
+         in Yin's paper [1].
+        - These steps MUST be dpne in series.
+        """
         for document_index, document in enumerate(self.corpus.documents):
             current_topic_index = self.document_topic_assignments[document_index]
             self.number_of_documents_in_each_topic[current_topic_index] -= 1
@@ -119,6 +128,7 @@ class GibbsSamplingDMM:
             self.document_topic_assignments[document_index] = new_topic_index
 
     def _update_topic_weights_for_document(self, document_index):
+        """Update the topic weights for a particular document."""
         document = self.corpus.documents[document_index]
         self.topic_weights = self.number_of_documents_in_each_topic + self.alpha
         occurrence_to_index_count_for_document = self.corpus.occurrence_to_index_count[document_index]

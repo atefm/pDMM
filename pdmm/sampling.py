@@ -3,16 +3,13 @@ import random
 
 class GibbsSamplingDMM:
 
-    def __init__(self, corpus, output_path, number_of_topics, alpha, beta,
-                 number_of_iterations, number_of_top_words, name):
+    def __init__(self, corpus, number_of_topics, alpha, beta,
+                 number_of_iterations):
         self.corpus = corpus
-        self.output_path = output_path
         self.number_of_topics = number_of_topics
         self.alpha = alpha
         self.beta = beta
         self.number_of_iterations = number_of_iterations
-        self.number_of_top_words = number_of_top_words
-        self.name = name
 
         self.topic_assignments = []
         self.document_topic_count = []

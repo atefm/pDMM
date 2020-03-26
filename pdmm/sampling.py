@@ -7,11 +7,11 @@ class GibbsSamplingDMM:
                  number_of_iterations, number_of_top_words, name):
         self.corpus = corpus
         self.output_path = output_path
-        self.number_of_topics = int(number_of_topics)
-        self.alpha = float(alpha)
-        self.beta = float(beta)
-        self.number_of_iterations = int(number_of_iterations)
-        self.number_of_top_words = int(number_of_top_words)
+        self.number_of_topics = number_of_topics
+        self.alpha = alpha
+        self.beta = beta
+        self.number_of_iterations = number_of_iterations
+        self.number_of_top_words = number_of_top_words
         self.name = name
 
         self.topic_assignments = []

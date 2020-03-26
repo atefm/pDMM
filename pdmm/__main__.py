@@ -2,6 +2,7 @@ import argparse
 import os
 import sys
 
+from .corpus import Corpus
 from .sampling import GibbsSamplingDMM
 
 
@@ -21,8 +22,9 @@ def check_arg(args=None):
 
 if __name__ == '__main__':
     args = check_arg(sys.argv[1:])
+    corpus = Corpus.from_document_file(args.output_path)
     model = GibbsSamplingDMM(
-        args.corpus_path,
+        corpus,
         args.output_path,
         args.number_of_topics,
         args.alpha,
@@ -31,7 +33,6 @@ if __name__ == '__main__':
         args.number_of_top_words,
         args.name
     )
-    model.analyse_corpus()
     model.topic_assignment_initialise()
     model.inference()
 

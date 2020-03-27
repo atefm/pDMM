@@ -37,8 +37,8 @@ class CommandLineTests(unittest.TestCase):
 
         pdmm_main(parsed_args)
 
-        expected_top_words = read_contents_from_path("tests/data/topWordsNew")
-        expected_topic_assignments = read_contents_from_path("tests/data/topicAssignmentsNew")
+        expected_top_words = read_contents_from_path("tests/data/topWords")
+        expected_topic_assignments = read_contents_from_path("tests/data/topicAssignments")
 
         top_words = read_contents_from_path(os.path.join(self.tempdir.name, "topWords"))
         topic_assignments = read_contents_from_path(os.path.join(self.tempdir.name, "topicAssignments"))

@@ -10,7 +10,7 @@ from .corpus import Corpus
 from .sampling import GibbsSamplingDMM
 
 
-def main(parameters):
+def main(parameters, seed=None):
     """Main function."""
     logger = logging.getLogger(__name__)
 
@@ -22,7 +22,7 @@ def main(parameters):
         parameters.alpha,
         parameters.beta,
     )
-    model.randomly_initialise_topic_assignment()
+    model.randomly_initialise_topic_assignment(seed=seed)
     model.inference(parameters.number_of_iterations)
 
     if parameters.output_path:

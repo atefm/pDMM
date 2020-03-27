@@ -72,10 +72,8 @@ class GibbsSamplingDMM:
     def randomly_initialise_topic_assignment(self, seed=None):
         """Randomly assign topics to each of the documents."""
         np.random.seed(seed)
-        self.document_topic_assignments = np.random.randint(0, self.number_of_topics,
-                                                            size=self.corpus.number_of_documents)
-        self.number_of_documents_in_each_topic = np.bincount(self.document_topic_assignments,
-                                                             minlength=self.number_of_topics)
+        self.document_topic_assignments = np.random.randint(0, self.number_of_topics, self.corpus.number_of_documents)
+        self.number_of_documents_in_each_topic = np.bincount(self.document_topic_assignments, self.number_of_topics)
 
         for document_index, new_topic in enumerate(self.document_topic_assignments):
             self._assign_document_to_topic(document_index, new_topic)

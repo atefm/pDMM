@@ -1,9 +1,6 @@
 """
 Utility functions for the tests package.
 """
-import random
-
-import numpy as np
 
 
 def read_contents_from_path(file_path):

@@ -35,7 +35,8 @@ def check_arg(args=None):
     parser = argparse.ArgumentParser(description='Topic Modelling')
     parser.add_argument('-c', '--corpus-file', help='Path to corpus file', dest="corpus_path", required=True,
                         metavar="<path>")
-    parser.add_argument('-n', '--num-topics', help='Number of topics', dest="number_of_topics", default=20, metavar="<integer>", type=int)
+    parser.add_argument('-n', '--num-topics', help='Number of topics', dest="number_of_topics", default=20,
+                        metavar="<integer>", type=int)
     parser.add_argument('-a', '--alpha', help='Alpha value', default=0.1, metavar="<double>", type=float)
     parser.add_argument('-b', '--beta', help='Beta value', default=0.001, metavar="<double>", type=float)
     parser.add_argument('--output-path', help='Output directory', dest="output_path", default="./output/",

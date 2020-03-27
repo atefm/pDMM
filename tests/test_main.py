@@ -2,7 +2,6 @@
 Tests for the command line.
 """
 import os
-import random
 import tempfile
 import unittest
 

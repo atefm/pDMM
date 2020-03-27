@@ -1,6 +1,7 @@
 """
 Contains the GibbsSamplingDMM class.
 """
+from collections import Counter
 import logging
 
 import numpy as np
@@ -116,14 +117,10 @@ class GibbsSamplingDMM:
         top_words : list[str]
             A list of the top words as strings.
         """
-        word_count = {w: self.number_of_each_word_in_each_topic[topic_index][w] for w in range(self.corpus.vocab.size)}
-        top_words = []
-        sorted_word_ids_iterator = iter(sorted(word_count, key=word_count.get, reverse=True))
-
-        while len(top_words) < number_of_top_words:
-            next_word_id = next(sorted_word_ids_iterator)
-            next_word = self.corpus.vocab.get_word_from_id(next_word_id)
-            top_words.append(next_word)
+        number_of_each_word_in_topic = self.number_of_each_word_in_each_topic[topic_index]
+        word_counts = Counter(dict(enumerate(number_of_each_word_in_topic)))
+        most_common_elements = word_counts.most_common(number_of_top_words)
+        top_words = [self.corpus.vocab.get_word_from_id(word_id) for word_id, count in most_common_elements]
 
         return top_words
 

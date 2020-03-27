@@ -181,7 +181,7 @@ class GibbsSamplingDMM:
 
             self._update_topic_weights_for_document(document_index)
 
-            random_number = np.random.uniform(0, 1)
+            random_number = np.random.random()
             new_topic_index = sample_from_multinomial_and_mutate_weights(self.topic_weights, random_number)
 
             self.number_of_documents_in_each_topic[new_topic_index] += 1

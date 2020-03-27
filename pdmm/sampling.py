@@ -93,7 +93,6 @@ class GibbsSamplingDMM:
         - This implements the second 'for' loop from the algorithm
           in Yin's paper [1].
         """
-        self.topic_weights = [0 for __ in range(self.number_of_topics)]
         for iteration in range(1, number_of_iterations + 1):
             self.logger.debug("Sampling in iteration {} of {}".format(iteration, number_of_iterations))
             self._sample_in_single_iteration()

@@ -2,15 +2,13 @@
 Tests for the command line.
 """
 import os
-import random
 import tempfile
 import unittest
 
-import pdmm.sampling
 from pdmm.__main__ import check_arg
 from pdmm.__main__ import main as pdmm_main
 
-from .utils import read_contents_from_path, python_2_randint
+from .utils import read_contents_from_path
 
 
 class CommandLineTests(unittest.TestCase):
@@ -25,8 +23,6 @@ class CommandLineTests(unittest.TestCase):
 
     def test_overall_output(self):
         """Test that the output is correct."""
-        random.seed(1)
-        pdmm.sampling.random.randint = python_2_randint
         arg_string = "--corpus {} --output {} --iterations {}".format(
             "tests/data/sample_data",
             self.tempdir.name,
@@ -35,7 +31,7 @@ class CommandLineTests(unittest.TestCase):
         arguments_components = arg_string.split()
         parsed_args = check_arg(arguments_components)
 
-        pdmm_main(parsed_args)
+        pdmm_main(parsed_args, seed=1)
 
         expected_top_words = read_contents_from_path("tests/data/topWords")
         expected_topic_assignments = read_contents_from_path("tests/data/topicAssignments")

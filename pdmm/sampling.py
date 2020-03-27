@@ -2,7 +2,6 @@
 Contains the GibbsSamplingDMM class.
 """
 import logging
-import random
 
 import numpy as np
 
@@ -70,11 +69,11 @@ class GibbsSamplingDMM:
 
         self.logger = logging.getLogger(__name__)
 
-    def randomly_initialise_topic_assignment(self):
+    def randomly_initialise_topic_assignment(self, seed=None):
         """Randomly assign topics to each of the documents."""
-        self.document_topic_assignments = np.array(
-            [random.randint(0, self.number_of_topics - 1) for __ in range(self.corpus.number_of_documents)]
-        )
+        np.random.seed(seed)
+        self.document_topic_assignments = np.random.randint(0, self.number_of_topics,
+                                                            size=self.corpus.number_of_documents)
         self.number_of_documents_in_each_topic = np.bincount(self.document_topic_assignments,
                                                              minlength=self.number_of_topics)
 
@@ -182,7 +181,7 @@ class GibbsSamplingDMM:
 
             self._update_topic_weights_for_document(document_index)
 
-            random_number = random.uniform(0, 1)
+            random_number = np.random.random()
             new_topic_index = sample_from_multinomial_and_mutate_weights(self.topic_weights, random_number)
 
             self.number_of_documents_in_each_topic[new_topic_index] += 1

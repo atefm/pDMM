@@ -70,11 +70,13 @@ class GibbsSamplingDMM:
 
         self.logger = logging.getLogger(__name__)
 
-    def randomly_initialise_topic_assignment(self):
+    def randomly_initialise_topic_assignment(self, seed=None):
         """Randomly assign topics to each of the documents."""
+        random.seed(seed)
         self.document_topic_assignments = np.array(
             [random.randint(0, self.number_of_topics - 1) for __ in range(self.corpus.number_of_documents)]
         )
+        # self.document_topic_assignments = np.random.randint(0, self.number_of_topics, size=self.corpus.number_of_documents)
         self.number_of_documents_in_each_topic = np.bincount(self.document_topic_assignments,
                                                              minlength=self.number_of_topics)
 

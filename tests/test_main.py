@@ -6,11 +6,10 @@ import random
 import tempfile
 import unittest
 
-import pdmm.sampling
 from pdmm.__main__ import check_arg
 from pdmm.__main__ import main as pdmm_main
 
-from .utils import read_contents_from_path, python_2_randint
+from .utils import read_contents_from_path
 
 
 class CommandLineTests(unittest.TestCase):

@@ -26,7 +26,6 @@ class CommandLineTests(unittest.TestCase):
     def test_overall_output(self):
         """Test that the output is correct."""
         random.seed(1)
-        # pdmm.sampling.random.randint = python_2_randint
         arg_string = "--corpus {} --output {} --iterations {}".format(
             "tests/data/sample_data",
             self.tempdir.name,

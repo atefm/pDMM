@@ -48,6 +48,11 @@ class Corpus:
         """Return the number of documents in the corpus."""
         return len(self.documents)
 
+    def get_mean_document_length(self):
+        """Get the mean length of documents in the corpus."""
+        sum_of_lengths = sum(len(document) for document in self.documents)
+        return sum_of_lengths / self.number_of_documents
+
     @classmethod
     def from_document_file(cls, file_path):
         """Create a Corpus instance from a document file."""

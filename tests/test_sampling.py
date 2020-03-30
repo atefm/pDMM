@@ -14,10 +14,7 @@ class TimingTests(unittest.TestCase):
         """Test that the inference is fast enough."""
         corpus = Corpus.from_document_file("tests/data/sample_data")
 
-        model = GibbsSamplingDMM(
-            corpus,
-            number_of_topics=20,
-        )
+        model = GibbsSamplingDMM(corpus, number_of_topics=20)
         model.randomly_initialise_topic_assignment(seed=1)
         number_of_iterations = 200
 

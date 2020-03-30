@@ -23,11 +23,7 @@ class CommandLineTests(unittest.TestCase):
 
     def test_overall_output(self):
         """Test that the output is correct."""
-        arg_string = "--corpus {} --output {} --iterations {}".format(
-            "tests/data/sample_data",
-            self.tempdir.name,
-            50,
-        )
+        arg_string = "--corpus {} --output {} --iterations {}".format("tests/data/sample_data", self.tempdir.name, 50)
         arguments_components = arg_string.split()
         parsed_args = check_arg(arguments_components)
 

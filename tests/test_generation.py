@@ -6,7 +6,7 @@ import unittest
 from pdmm import Corpus, GibbsSamplingDMM
 
 
-class GenerationTests(unittest.TestCase):
+class GenerationTestsWithReplacement(unittest.TestCase):
 
     def setUp(self):
         """Code to run before each test."""
@@ -27,7 +27,7 @@ class GenerationTests(unittest.TestCase):
         expected_topics = [17, 18, 19, 17, 18, 19, 17, 18, 19, 18]
         self.assertListEqual(self.chosen_topics, expected_topics)
 
-    def test_generation_with_replacement(self):
+    def test_generated_documents(self):
         """Test the generation of sentences with replacement."""
         expected_documents = [
             ['people', 'post', 'account', 'plan', 'show', 'media'],

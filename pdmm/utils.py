@@ -26,6 +26,7 @@ def sample_from_multinomial_and_mutate_weights(weights, random_number):
     - Sampling like this will mutate the input array.
     - Weights do NOT need to sum to 1.
     """
+    weights = weights.copy()
     number_of_weights = weights.shape[0]
     for i in range(1, number_of_weights):
         weights[i] += weights[i - 1]

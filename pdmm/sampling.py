@@ -102,9 +102,7 @@ class GibbsSamplingDMM:
         """Generate new synthetic documents according to the model."""
         np.random.seed(seed)
 
-        if replacement:
-            random_choice_function = np.random.multinomial
-        else:
+        if not replacement:
             raise NotImplementedError("Not yet possible to sample without replacement.")
 
         mean_document_length_in_corpus = self.corpus.get_mean_document_length()
@@ -112,12 +110,19 @@ class GibbsSamplingDMM:
         documents = []
 
         for i in range(number_of_documents):
-            copy_of_weights = self.topic_weights.copy()
-            topic_index = sample_from_multinomial_and_mutate_weights(copy_of_weights)
-            topic = self.number_of_each_word_in_each_topic[topic_index]
+            words = []
             document_length = document_lengths[i]
-            document = random_choice_function(document_length, pvals=topic)
-            documents.append(document)
+            copy_of_topic_weights = self.topic_weights.copy()
+            random_number_for_topics = np.random.random()
+            topic_index = sample_from_multinomial_and_mutate_weights(copy_of_topic_weights, random_number_for_topics)
+            topic = self.number_of_each_word_in_each_topic[topic_index]
+            for j in range(document_length):
+                copy_of_word_weights = topic.copy()
+                random_number_for_words = np.random.random()
+                word_index = sample_from_multinomial_and_mutate_weights(copy_of_word_weights, random_number_for_words)
+                word = self.corpus.vocab.get_word_from_id(word_index)
+                words.append(word)
+            documents.append(words)
         return documents
 
     def get_top_words_for_topic(self, topic_index, number_of_top_words=20):

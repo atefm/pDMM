@@ -113,13 +113,13 @@ class GibbsSamplingDMM:
         for i in range(number_of_documents):
             words = []
             document_length = document_lengths[i]
-            copy_of_topic_weights = self.topic_weights.copy()
+            copy_of_topic_weights = self.topic_weights
             random_number_for_topics = np.random.random()
             topic_index = sample_from_multinomial_and_mutate_weights(copy_of_topic_weights, random_number_for_topics)
             chosen_topics.append(topic_index)
             topic = self.number_of_each_word_in_each_topic[topic_index]
             for j in range(document_length):
-                copy_of_word_weights = topic.copy()
+                copy_of_word_weights = topic
                 random_number_for_words = np.random.random()
                 word_index = sample_from_multinomial_and_mutate_weights(copy_of_word_weights, random_number_for_words)
                 word = self.corpus.vocab.get_word_from_id(word_index)

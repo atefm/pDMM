@@ -108,6 +108,7 @@ class GibbsSamplingDMM:
         mean_document_length_in_corpus = self.corpus.get_mean_document_length()
         document_lengths = np.random.poisson(mean_document_length_in_corpus, size=number_of_documents)
         documents = []
+        chosen_topics = []
 
         for i in range(number_of_documents):
             words = []
@@ -115,6 +116,7 @@ class GibbsSamplingDMM:
             copy_of_topic_weights = self.topic_weights.copy()
             random_number_for_topics = np.random.random()
             topic_index = sample_from_multinomial_and_mutate_weights(copy_of_topic_weights, random_number_for_topics)
+            chosen_topics.append(topic_index)
             topic = self.number_of_each_word_in_each_topic[topic_index]
             for j in range(document_length):
                 copy_of_word_weights = topic.copy()
@@ -123,7 +125,7 @@ class GibbsSamplingDMM:
                 word = self.corpus.vocab.get_word_from_id(word_index)
                 words.append(word)
             documents.append(words)
-        return documents
+        return documents, chosen_topics
 
     def get_top_words_for_topic(self, topic_index, number_of_top_words=20):
         """

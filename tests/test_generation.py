@@ -14,17 +14,21 @@ class GenerationTests(unittest.TestCase):
         self.model = GibbsSamplingDMM(corpus, number_of_topics=20)
         self.model.randomly_initialise_topic_assignment(seed=1)
         self.model.inference(50)
+        self.generated_documents, self.chosen_topics = self.model.generate_synthetic_documents(10, seed=5)
 
     def test_generated_documents_lengths(self):
         """Test that the lengths of the generated documents are correct."""
-        generated_documents, __ = self.model.generate_synthetic_documents(10, seed=5)
-        document_sizes = [len(document) for document in generated_documents]
+        document_sizes = [len(document) for document in self.generated_documents]
         expected_sizes = [6, 3, 5, 5, 3, 3, 3, 1, 7, 7]
         self.assertListEqual(document_sizes, expected_sizes)
 
+    def test_generated_topics(self):
+        """Test that the same topics have been generated."""
+        expected_topics = [17, 18, 19, 17, 18, 19, 17, 18, 19, 18]
+        self.assertListEqual(self.chosen_topics, expected_topics)
+
     def test_generation_with_replacement(self):
         """Test the generation of sentences with replacement."""
-        generated_documents, __ = self.model.generate_synthetic_documents(10, seed=5)
         expected_documents = [
             ['people', 'post', 'account', 'plan', 'show', 'media'],
             ['proves', 'numbers', 'numbers'],
@@ -38,4 +42,4 @@ class GenerationTests(unittest.TestCase):
             ['logged', 'reliable', 'tests', 'things', 'play', 'reports', 'make']
         ]
 
-        self.assertListEqual(generated_documents, expected_documents)
+        self.assertListEqual(self.generated_documents, expected_documents)

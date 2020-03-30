@@ -6,7 +6,7 @@ import logging
 
 import numpy as np
 
-from .utils import sample_from_multinomial_and_mutate_weights
+from .utils import sample_from_cumulative_weights
 
 
 class GibbsSamplingDMM:
@@ -113,15 +113,15 @@ class GibbsSamplingDMM:
         for i in range(number_of_documents):
             words = []
             document_length = document_lengths[i]
-            copy_of_topic_weights = self.topic_weights
             random_number_for_topics = np.random.random()
-            topic_index = sample_from_multinomial_and_mutate_weights(copy_of_topic_weights, random_number_for_topics)
+            cumulative_topic_weights = self.topic_weights.cumsum()
+            topic_index = sample_from_cumulative_weights(cumulative_topic_weights, random_number_for_topics)
             chosen_topics.append(topic_index)
             topic = self.number_of_each_word_in_each_topic[topic_index]
             for j in range(document_length):
-                copy_of_word_weights = topic
                 random_number_for_words = np.random.random()
-                word_index = sample_from_multinomial_and_mutate_weights(copy_of_word_weights, random_number_for_words)
+                cumulative_word_weights = topic.cumsum()
+                word_index = sample_from_cumulative_weights(cumulative_word_weights, random_number_for_words)
                 word = self.corpus.vocab.get_word_from_id(word_index)
                 words.append(word)
             documents.append(words)
@@ -206,7 +206,8 @@ class GibbsSamplingDMM:
             self._update_topic_weights_for_document(document_index)
 
             random_number = np.random.random()
-            new_topic_index = sample_from_multinomial_and_mutate_weights(self.topic_weights, random_number)
+            cumulative_weights = self.topic_weights.cumsum()
+            new_topic_index = sample_from_cumulative_weights(cumulative_weights, random_number)
 
             self.number_of_documents_in_each_topic[new_topic_index] += 1
             self._assign_document_to_topic(document_index, new_topic_index)

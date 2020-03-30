@@ -16,8 +16,8 @@ class GenerationTests(unittest.TestCase):
         self.model.inference(50)
 
     def test_generation_with_replacement(self):
-        """Test the generation of sentences witgh replacement."""
-        generated_documents = self.model.generate_synthetic_documents(10, seed=5)
+        """Test the generation of sentences with replacement."""
+        generated_documents, __ = self.model.generate_synthetic_documents(10, seed=5)
         expected_documents = [
             ['people', 'post', 'account', 'plan', 'show', 'media'],
             ['proves', 'numbers', 'numbers'],

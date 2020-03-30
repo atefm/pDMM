@@ -5,14 +5,14 @@ from numba import njit
 
 
 @njit(fastmath=True)
-def sample_from_multinomial_and_mutate_weights(weights, random_number):
+def sample_from_cumulative_weights(cumulative_weights, random_number):
     """
     Sample from a multinomial using linear search method.
 
     Parameters
     ----------
-    weights : np.ndarray[float]
-        The weights for the multinomial.
+    cumulative_weights : np.ndarray[float]
+        The cumulative weights for the multinomial.
     random_number : float
         The random number passed into the array.
 
@@ -20,15 +20,8 @@ def sample_from_multinomial_and_mutate_weights(weights, random_number):
     -------
     sampled_value : int
         The samples value.
-
-    Notes
-    -----
-    - Sampling like this will mutate the input array.
-    - Weights do NOT need to sum to 1.
     """
-    cumulative_weights = weights.cumsum()
-    number_of_weights = weights.shape[0]
-
+    number_of_weights = cumulative_weights.shape[0]
     scaled_random_number = random_number * cumulative_weights[-1]
 
     counter = 0

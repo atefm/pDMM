@@ -11,10 +11,7 @@ class GenerationTests(unittest.TestCase):
     def setUp(self):
         """Code to run before each test."""
         corpus = Corpus.from_document_file("tests/data/sample_data")
-        self.model = GibbsSamplingDMM(
-            corpus,
-            number_of_topics=20,
-        )
+        self.model = GibbsSamplingDMM(corpus, number_of_topics=20)
         self.model.randomly_initialise_topic_assignment(seed=1)
         self.model.inference(50)
 

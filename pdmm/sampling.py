@@ -98,8 +98,10 @@ class GibbsSamplingDMM:
             self.logger.debug("Sampling in iteration {} of {}".format(iteration, number_of_iterations))
             self._sample_in_single_iteration()
 
-    def generate_synthetic_documents(self, number_of_documents, replacement=True):
+    def generate_synthetic_documents(self, number_of_documents, replacement=True, seed=None):
         """Generate new synthetic documents according to the model."""
+        np.random.seed(seed)
+
         if replacement:
             random_choice_function = np.random.multinomial
         else:

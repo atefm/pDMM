@@ -122,7 +122,6 @@ class GibbsSamplingDMM:
             cumulative_word_weights = cumulative_word_weights_for_all_topics[topic_index]
             for j in range(document_length):
                 random_number_for_words = np.random.random()
-
                 word_index = sample_from_cumulative_weights(cumulative_word_weights, random_number_for_words)
                 word = self.corpus.vocab.get_word_from_id(word_index)
                 words.append(word)

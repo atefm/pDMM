@@ -21,5 +21,17 @@ class GenerationTests(unittest.TestCase):
     def test_generation_with_replacement(self):
         """Test the generation of sentences witgh replacement."""
         generated_documents = self.model.generate_synthetic_documents(10, seed=5)
-        for document in generated_documents:
-            print(document)
+        expected_documents = [
+            ['people', 'post', 'account', 'plan', 'show', 'media'],
+            ['proves', 'numbers', 'numbers'],
+            ['deals', 'people', 'great', 'time', 'neowin'],
+            ['time', 'good', 'facebook', 'follow', 'good'],
+            ['threat', 'excited', 'smm'],
+            ['ipad', 'access', 'macbook'],
+            ['hours', 'omg', 'account'],
+            ['android'],
+            ['ipad', 'brand', 'improve', 'professional', 'red', 'neowin', 'great'],
+            ['logged', 'reliable', 'tests', 'things', 'play', 'reports', 'make']
+        ]
+
+        self.assertListEqual(generated_documents, expected_documents)

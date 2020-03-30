@@ -15,6 +15,13 @@ class GenerationTests(unittest.TestCase):
         self.model.randomly_initialise_topic_assignment(seed=1)
         self.model.inference(50)
 
+    def test_generated_documents_lengths(self):
+        """Test that the lengths of the generated documents are correct."""
+        generated_documents, __ = self.model.generate_synthetic_documents(10, seed=5)
+        document_sizes = [len(document) for document in generated_documents]
+        expected_sizes = [6, 3, 5, 5, 3, 3, 3, 1, 7, 7]
+        self.assertListEqual(document_sizes, expected_sizes)
+
     def test_generation_with_replacement(self):
         """Test the generation of sentences with replacement."""
         generated_documents, __ = self.model.generate_synthetic_documents(10, seed=5)

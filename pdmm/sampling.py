@@ -98,6 +98,26 @@ class GibbsSamplingDMM:
             self.logger.debug("Sampling in iteration {} of {}".format(iteration, number_of_iterations))
             self._sample_in_single_iteration()
 
+    def generate_synthetic_documents(self, number_of_documents, replacement=True):
+        """Generate new synthetic documents according to the model."""
+        if replacement:
+            random_choice_function = np.random.multinomial
+        else:
+            raise NotImplementedError("Not yet possible to sample without replacement.")
+
+        mean_document_length_in_corpus = self.corpus.get_mean_document_length()
+        document_lengths = np.random.poisson(mean_document_length_in_corpus, size=number_of_documents)
+        documents = []
+
+        for i in range(number_of_documents):
+            copy_of_weights = self.topic_weights.copy()
+            topic_index = sample_from_multinomial_and_mutate_weights(copy_of_weights)
+            topic = self.number_of_each_word_in_each_topic[topic_index]
+            document_length = document_lengths[i]
+            document = random_choice_function(document_length, pvals=topic)
+            documents.append(document)
+        return documents
+
     def get_top_words_for_topic(self, topic_index, number_of_top_words=20):
         """
         Get a list of the top words in a topic.

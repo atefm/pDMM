@@ -27,18 +27,19 @@ class GenerationTestsWithReplacement(unittest.TestCase):
         expected_topics = [17, 17, 17, 17, 17, 17, 17, 17, 17, 17]
         self.assertListEqual(self.chosen_topics, expected_topics)
 
+    # noinspection SpellCheckingInspection
     def test_generated_documents(self):
         """Test the generation of sentences with replacement."""
         expected_documents = [
-            ["people", "facebook", "ill", "thing", "amp", "join"],
-            ["show", "section", "retweets"],
-            ["people", "good", "trip", "media", "show"],
-            ["facebook", "good", "facebook", "show", "good"],
-            ["back", "sleep", "account"],
-            ["people", "dead", "good"],
+            ["retweets", "messed", "people", "good", "trip", "media"],
+            ["show", "today", "facebook"],
+            ["good", "facebook", "show", "good", "thing"],
+            ["back", "sleep", "account", "account", "people"],
+            ["dead", "good", "people"],
             ["pass", "omg", "point"],
-            ["love"],
-            ["people", "make", "dead", "sharepoint", "seo", "show", "love"],
+            ["good", "love", "dead"],
+            ["people"],
+            ["make", "dead", "sharepoint", "seo", "show", "love", "sleep"],
             ["social", "shout", "show", "today", "facebook", "add", "fuck"]
         ]
         self.assertListEqual(self.generated_documents, expected_documents)

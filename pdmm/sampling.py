@@ -108,16 +108,17 @@ class GibbsSamplingDMM:
         mean_document_length_in_corpus = self.corpus.get_mean_document_length()
         document_lengths = np.random.poisson(mean_document_length_in_corpus, size=number_of_documents)
         documents = []
-        chosen_topics = []
 
         cumulative_topic_weights = self.topic_weights.cumsum()
         cumulative_word_weights_for_all_topics = self.number_of_each_word_in_each_topic.cumsum(axis=1)
 
+        random_numbers_for_topics = np.random.random(number_of_documents)
+        topic_indices = sample_many_from_cumulative_weights(cumulative_topic_weights, random_numbers_for_topics)
+        chosen_topics = topic_indices
+
         for i in range(number_of_documents):
             document_length = document_lengths[i]
-            random_number_for_topics = np.random.random()
-            topic_index = sample_from_cumulative_weights(cumulative_topic_weights, random_number_for_topics)
-            chosen_topics.append(topic_index)
+            topic_index = topic_indices[i]
             cumulative_word_weights = cumulative_word_weights_for_all_topics[topic_index]
             random_numbers_for_words = np.random.random(document_length)
             word_indices = sample_many_from_cumulative_weights(cumulative_word_weights, random_numbers_for_words)

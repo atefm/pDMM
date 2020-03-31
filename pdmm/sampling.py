@@ -6,7 +6,7 @@ import logging
 
 import numpy as np
 
-from .utils import sample_from_multinomial_and_mutate_weights
+from .utils import sample_from_cumulative_weights, sample_many_from_cumulative_weights
 
 
 class GibbsSamplingDMM:
@@ -109,21 +109,22 @@ class GibbsSamplingDMM:
         document_lengths = np.random.poisson(mean_document_length_in_corpus, size=number_of_documents)
         documents = []
 
+        cumulative_topic_weights = self.topic_weights.cumsum()
+        cumulative_word_weights_for_all_topics = self.number_of_each_word_in_each_topic.cumsum(axis=1)
+
+        random_numbers_for_topics = np.random.random(number_of_documents)
+        topic_indices = sample_many_from_cumulative_weights(cumulative_topic_weights, random_numbers_for_topics)
+        chosen_topics = topic_indices
+
         for i in range(number_of_documents):
-            words = []
             document_length = document_lengths[i]
-            copy_of_topic_weights = self.topic_weights.copy()
-            random_number_for_topics = np.random.random()
-            topic_index = sample_from_multinomial_and_mutate_weights(copy_of_topic_weights, random_number_for_topics)
-            topic = self.number_of_each_word_in_each_topic[topic_index]
-            for j in range(document_length):
-                copy_of_word_weights = topic.copy()
-                random_number_for_words = np.random.random()
-                word_index = sample_from_multinomial_and_mutate_weights(copy_of_word_weights, random_number_for_words)
-                word = self.corpus.vocab.get_word_from_id(word_index)
-                words.append(word)
+            topic_index = topic_indices[i]
+            cumulative_word_weights = cumulative_word_weights_for_all_topics[topic_index]
+            random_numbers_for_words = np.random.random(document_length)
+            word_indices = sample_many_from_cumulative_weights(cumulative_word_weights, random_numbers_for_words)
+            words = [self.corpus.vocab.get_word_from_id(word_index) for word_index in word_indices]
             documents.append(words)
-        return documents
+        return documents, chosen_topics
 
     def get_top_words_for_topic(self, topic_index, number_of_top_words=20):
         """
@@ -204,7 +205,8 @@ class GibbsSamplingDMM:
             self._update_topic_weights_for_document(document_index)
 
             random_number = np.random.random()
-            new_topic_index = sample_from_multinomial_and_mutate_weights(self.topic_weights, random_number)
+            cumulative_weights = self.topic_weights.cumsum()
+            new_topic_index = sample_from_cumulative_weights(cumulative_weights, random_number)
 
             self.number_of_documents_in_each_topic[new_topic_index] += 1
             self._assign_document_to_topic(document_index, new_topic_index)

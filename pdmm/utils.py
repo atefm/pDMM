@@ -2,45 +2,72 @@
 Contains utility functions for sampling.
 """
 from numba import njit
+import numpy as np
 
 
 @njit(fastmath=True)
-def sample_from_multinomial_and_mutate_weights(weights, random_number):
+def sample_from_cumulative_weights(cumulative_weights, random_number):
     """
     Sample from a multinomial using linear search method.
 
     Parameters
     ----------
-    weights : np.ndarray[float]
-        The weights for the multinomial.
+    cumulative_weights : np.ndarray[float]
+        The cumulative weights for the multinomial.
     random_number : float
-        The random number passed into the array.
+        The random number to be used.
 
     Returns
     -------
     sampled_value : int
-        The samples value.
-
-    Notes
-    -----
-    - Sampling like this will mutate the input array.
-    - Weights do NOT need to sum to 1.
+        The sampled value.
     """
-    number_of_weights = weights.shape[0]
-    for i in range(1, number_of_weights):
-        weights[i] += weights[i - 1]
-
-    scaled_random_number = random_number * weights[-1]
+    number_of_weights = cumulative_weights.shape[0]
+    scaled_random_number = random_number * cumulative_weights[-1]
 
     counter = 0
     maximum_counter_value = number_of_weights - 1
 
     while counter < maximum_counter_value:
         mid = counter + ((maximum_counter_value - counter) // 2)
-        if scaled_random_number > weights[mid]:
+        if scaled_random_number > cumulative_weights[mid]:
             counter = mid + 1
         else:
             maximum_counter_value = mid
 
     sampled_value = counter
     return sampled_value
+
+
+@njit(fastmath=True)
+def sample_many_from_cumulative_weights(cumulative_weights, random_numbers):
+    """
+    Sample from a multinomial using linear search method.
+
+    Parameters
+    ----------
+    cumulative_weights : np.ndarray[float]
+        The cumulative weights for the multinomial.
+    random_numbers : np.ndarray[float]
+        The random numbers to be used.
+
+    Returns
+    -------
+    sampled_values : np.array[int]
+        The sampled values.
+    """
+    number_of_weights = cumulative_weights.shape[0]
+    scaled_random_numbers = random_numbers * cumulative_weights[-1]
+
+    counters = np.zeros_like(random_numbers, dtype=np.int64)
+    maximum_counter_value = number_of_weights - 1
+    upper_bounds = number_of_weights - np.ones_like(random_numbers, dtype=np.int64)
+
+    for i in range(maximum_counter_value):
+        mid_values = counters + ((upper_bounds - counters) // 2)
+        indicators = scaled_random_numbers > cumulative_weights[mid_values]
+        counters = (indicators * mid_values) + ((1 - indicators) * counters) + indicators
+        upper_bounds = (indicators * upper_bounds) + ((1 - indicators) * mid_values)
+
+    sampled_values = counters
+    return sampled_values

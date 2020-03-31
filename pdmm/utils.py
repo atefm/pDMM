@@ -66,7 +66,7 @@ def sample_many_from_cumulative_weights(cumulative_weights, random_numbers):
     for i in range(maximum_counter_value):
         mid_values = counters + ((upper_bounds - counters) // 2)
         indicators = scaled_random_numbers > cumulative_weights[mid_values]
-        counters = (indicators - mid_values) + ((1 - indicators) * counters) + indicators
+        counters = (indicators * mid_values) + ((1 - indicators) * counters) + indicators
         upper_bounds = (indicators * upper_bounds) + ((1 - indicators) * mid_values)
 
     sampled_values = counters

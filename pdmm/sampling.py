@@ -6,7 +6,7 @@ import logging
 
 import numpy as np
 
-from .utils import sample_from_cumulative_weights
+from .utils import sample_from_cumulative_weights, sample_many_from_cumulative_weights
 
 
 class GibbsSamplingDMM:
@@ -114,17 +114,14 @@ class GibbsSamplingDMM:
         cumulative_word_weights_for_all_topics = self.number_of_each_word_in_each_topic.cumsum(axis=1)
 
         for i in range(number_of_documents):
-            words = []
             document_length = document_lengths[i]
             random_number_for_topics = np.random.random()
             topic_index = sample_from_cumulative_weights(cumulative_topic_weights, random_number_for_topics)
             chosen_topics.append(topic_index)
             cumulative_word_weights = cumulative_word_weights_for_all_topics[topic_index]
-            for j in range(document_length):
-                random_number_for_words = np.random.random()
-                word_index = sample_from_cumulative_weights(cumulative_word_weights, random_number_for_words)
-                word = self.corpus.vocab.get_word_from_id(word_index)
-                words.append(word)
+            random_numbers_for_words = np.random.random(document_length)
+            word_indices = sample_many_from_cumulative_weights(cumulative_word_weights, random_numbers_for_words)
+            words = [self.corpus.vocab.get_word_from_id(word_index) for word_index in word_indices]
             documents.append(words)
         return documents, chosen_topics
 

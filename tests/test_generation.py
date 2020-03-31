@@ -25,7 +25,7 @@ class GenerationTestsWithReplacement(unittest.TestCase):
     def test_generated_topics(self):
         """Test that the same topics have been generated."""
         expected_topics = [17, 17, 17, 17, 17, 17, 17, 17, 17, 17]
-        self.assertListEqual(self.chosen_topics, expected_topics)
+        self.assertListEqual(list(self.chosen_topics), expected_topics)
 
     # noinspection SpellCheckingInspection
     def test_generated_documents(self):

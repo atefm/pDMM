@@ -26,12 +26,13 @@ class BasicTests(unittest.TestCase):
         test_indices = np.array([140,  83, 159, 171,  74, 178, 145,  90,  32,  88])
         observed_assignments = self.model.document_topic_assignments[test_indices]
         expected_assignments = [7, 13, 17, 14, 19, 16, 13, 13, 17, 11]
-        self.assertListEqual(list(observed_assignments), expected_assignments)
+        self.assertListEqual(list(observed_assignments), expected_assignments, "Lists differ at given indices.")
 
     def test_top_words(self):
         """Test that the top 10 words are correct."""
         self.model.inference(50)
         topic_index = 3
+        # noinspection SpellCheckingInspection
         expected_top_words = ["siri", "iphone", "year", "word", "minutes", "doc", "blackberry", "sooo", "glad", "gave"]
         observed_top_words = self.model.get_top_words_for_topic(topic_index, number_of_top_words=10)
         self.assertListEqual(expected_top_words, observed_top_words, "Top words are not correct.")
@@ -66,7 +67,7 @@ class FileTests(unittest.TestCase):
 
         expected_saved_string = "".join(lines)
         observed_saved_string = read_contents_from_path(file_path)
-        self.assertEqual(expected_saved_string, observed_saved_string)
+        self.assertEqual(expected_saved_string, observed_saved_string, "Top words file was not correctly saved.")
 
     def test_saving_assignments(self):
         """Test that the topicAssignments file is created properly."""
@@ -81,7 +82,7 @@ class FileTests(unittest.TestCase):
 
         expected_saved_string = "".join(lines)
         observed_saved_string = read_contents_from_path(file_path)
-        self.assertEqual(expected_saved_string, observed_saved_string)
+        self.assertEqual(expected_saved_string, observed_saved_string, "Topic assignments file was not correctly saved.")
 
 
 class TimingTests(unittest.TestCase):
@@ -130,9 +131,9 @@ class GenerationTestsWithReplacement(unittest.TestCase):
         expected_topics = [17, 17, 17, 17, 17, 17, 17, 17, 17, 17]
         self.assertListEqual(list(self.chosen_topics), expected_topics)
 
-    # noinspection SpellCheckingInspection
     def test_generated_documents(self):
         """Test the generation of sentences with replacement."""
+        # noinspection SpellCheckingInspection
         expected_documents = [
             ["retweets", "messed", "people", "good", "trip", "media"],
             ["show", "today", "facebook"],

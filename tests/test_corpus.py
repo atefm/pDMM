@@ -55,7 +55,7 @@ class CreationTests(unittest.TestCase):
 
         corpus_from_file = Corpus.from_document_file(file_path)
         corpus_from_documents = Corpus.from_documents_as_lists_of_words(self.list_of_documents)
-        self.assertEqual(corpus_from_documents, corpus_from_file)
+        self.assertEqual(corpus_from_documents, corpus_from_file, "Loaded corpus is not correct.")
 
 
 class AttributeTests(unittest.TestCase):
@@ -77,10 +77,10 @@ class AttributeTests(unittest.TestCase):
         """Test that the correct mean document length is reported."""
         expected_mean = sum(len(document) for document in self.list_of_documents) / len(self.list_of_documents)
         observed_mean = self.corpus.get_mean_document_length()
-        self.assertEqual(observed_mean, expected_mean, "Mean document lengths ais not correct.")
+        self.assertEqual(observed_mean, expected_mean, "Mean document lengths is not correct.")
 
     def test_bad_equality(self):
         """Test that a Corpus instance is not equal to an integer."""
         corpus = Corpus.from_documents_as_lists_of_words(self.list_of_documents)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(TypeError, msg="Comparison to incorrect type should raise an error."):
             bool(corpus == 5)

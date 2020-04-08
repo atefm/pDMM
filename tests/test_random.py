@@ -1,5 +1,5 @@
 """
-Tests for random sampling.
+Tests for random sampling. These will only break when built-in random functions have been affected by updates.
 """
 import unittest
 

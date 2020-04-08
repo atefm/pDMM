@@ -77,7 +77,7 @@ This will attempt to run the tests in the file `tests/test_corpus.py`.
 
 Python 3.7 is required. All package requirements can be found in `requirements.txt`, but the main dependencies are `coverage`, `numba` and `numpy`.
 
-## Changes from Original Implementation
+## Changes from the Original Implementation
 
 All changes can be tracked on Github, but the broad changes are as follows:
 

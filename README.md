@@ -1,44 +1,73 @@
-# pDMM: Python implemetation for Dirichlet Multinomial Mixture (DMM) model
+# pdmm: Python 3 Implementation for Dirichlet Multinomial Mixture (DMM) Model
 
+This is a Python 3 version of the [original implementation](https://github.com/atefm/pDMM) written by [atefm](https://github.com/atefm). It has a number of improvements, mainly speed and clarity. A full list of changes is available below.
+
+## Description
 
 Applying topic models for short texts (e.g. Tweets) is more challenging because of data sparsity and the limited contexts in such texts. One approach is to combine short texts into long pseudo-documents before training LDA. Another approach is to assume that there is only one topic per document [3]. pDMM provides implementations of the one-topic-per-document Dirichlet Multinomial Mixture (DMM) model (i.e. mixture of unigrams) [1][4].
 
 Bug reports, comments and suggestions about pDMM are highly appreciated. As a free open-source package, pDMM is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-# Usage
+## Usage
 
-	$ python pDMM.py [-h] --corpus <path> [--output <path>] [--ntopics <integer>] [--alpha <double>] [--beta <double>] [--niters <intege>] [--twords <integer>] [--name <string>]
+From the command line:
 
+```shell script
+$ python3 -m pdmm [-h] -c <path> [-n <integer>] [-a <double>] [-b <double>] [--output-path <path>] [--iterations <integer>] [--num-words <integer>]
+```
 
 where parameters in [ ] are optional.
 
+`-c, --corpus`: Specify the path to the input corpus file.
 
-`--corpus`: Specify the path to the input corpus file.
+`-n, --num-topics`: Specify the number of topics. The default is 20.
 
-`--output`: Specify the path where output must be stored.
+`-a, --alpha`: Specify the hyper-parameter alpha. The default value is 0.1.
 
-`--ntopics <int>`: Specify the number of topics. The default value is 20.
+`-b, --beta`: Specify the hyper-parameter beta. The default value is 0.01, which is a common setting in the literature [5]. Following [6], the users may consider a `beta` value of 0.1 for short texts.
 
-`--alpha <double>`: Specify the hyper-parameter `alpha`. The default value is 0.1.
+`--output-path`: Specify the output path for the results, which are saved in a folder at the path containing the files `topWords` and `topicAssignments`. If a path is not given, output will not be saved.
 
-`--beta <double>`: Specify the hyper-parameter `beta`. The default value is 0.01 which is a common setting in the literature [5]. Following [6], the users may consider to the `beta` value of 0.1 for short texts.
+`--iterations`: Specify the number of Gibbs sampling iterations. The default value is 2,000.
 
-`--niters <int>`: Specify the number of Gibbs sampling iterations. The default value is 2000.
-
-`--twords <int>`: Specify the number of the most probable topical words. The default value is 20.
-
-`--name <String>`: Specify a name to the topic modeling experiment. The default value is `model`.
+`--num-words`: Specify the number of top words to be presented and/or saved for each topic. The default value is 20.
 
 
-**Examples:**
+Consider the following example:
 
-	$ python pDMM.py --corpus sample_data -name test
+```shell script
+$ python3 -m pdmm --corpus-file tests/data/sample_data  --iterations 100
+```
 
-The output files are by default saved in output directory. We have output files of `test.topWords` and `test.topicAssignments`, referring to the top topical words and topic assignments respectively.
+From the interpreter:
+
+```python
+import pdmm
+corpus = pdmm.Corpus.from_document_file("/path/to/corpus/file")
+model = pdmm.GibbsSamplingDMM(corpus)
+model.randomly_initialise_topic_assignment()
+model.inference(number_of_iterations=100)
+```
+
+## Tests
+
+Tests can be run from the command line:
+
+```shell script
+$ python3 -m tests
+```
+
+The tests can be slow as they are insuring that the inference is producing the expected results. Alternatively, a test module can be run individually:
+
+```shell script
+$ python3 -m tests corpus
+```
+
+This will attempt to run the tests in the file `tests/test_corpus.py`.
 
 # Requirements
-Python 2.7
 
+Python 3.7 is required. All package requirements can be found in `requirements.txt`, but the main dependencies are `numpy` and `numba`.
 
 # References
 [1]	  Yin, J. and Wang, J., 2014, August. A dirichlet multinomial mixture model-based approach for short text clustering. In Proceedings of the 20th ACM SIGKDD international conference on Knowledge discovery and data mining (pp. 233-242). ACM.

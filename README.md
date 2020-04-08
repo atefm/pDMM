@@ -4,7 +4,7 @@ This is a Python 3 version of the [original implementation](https://github.com/a
 
 ## Description
 
-Applying topic models for short texts (e.g. Tweets) is more challenging because of data sparsity and the limited contexts in such texts. One approach is to combine short texts into long pseudo-documents before training LDA. Another approach is to assume that there is only one topic per document [[3]](#ref3). pDMM provides implementations of the one-topic-per-document Dirichlet Multinomial Mixture (DMM) model (i.e. mixture of unigrams) [[1]](#ref1)[[4]](#ref4). For further reading, see Manning [[7]](#ref7) and Lu [[8]](#ref8).
+Applying topic models for short texts (e.g. Tweets) is more challenging because of data sparsity and the limited contexts in such texts. One approach is to combine short texts into long pseudo-documents before training LDA. Another approach is to assume that there is only one topic per document [[3]](#references). pDMM provides implementations of the one-topic-per-document Dirichlet Multinomial Mixture (DMM) model (i.e. mixture of unigrams) [[1]](#references)[[4]](#references). For further reading, see Manning [[7]](#references) and Lu [[8]](#references).
 
 Bug reports, comments and suggestions about pDMM are highly appreciated. As a free open-source package, pDMM is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
@@ -24,7 +24,7 @@ where parameters in [ ] are optional.
 
 `-a, --alpha`: Specify the hyper-parameter alpha. The default value is 0.1.
 
-`-b, --beta`: Specify the hyper-parameter beta. The default value is 0.01, which is a common setting in the literature [[5]](#ref5). Following [[6]](#ref6), the users may consider a `beta` value of 0.1 for short texts.
+`-b, --beta`: Specify the hyper-parameter beta. The default value is 0.01, which is a common setting in the literature [[5]](#references). Following [[6]](#references), the users may consider a `beta` value of 0.1 for short texts.
 
 `--output-path`: Specify the output path for the results, which are saved in a folder at the path containing the files `topWords` and `topicAssignments`. If a path is not given, output will not be saved.
 
@@ -70,18 +70,18 @@ This will attempt to run the tests in the file `tests/test_corpus.py`.
 Python 3.7 is required. All package requirements can be found in `requirements.txt`, but the main dependencies are `numpy` and `numba`.
 
 # References
-[1] <a name="ref1"></a> Yin, J. and Wang, J., 2014, August. A dirichlet multinomial mixture model-based approach for short text clustering. In Proceedings of the 20th ACM SIGKDD international conference on Knowledge discovery and data mining (pp. 233-242). ACM.
+[1] Yin, J. and Wang, J., 2014, August. A dirichlet multinomial mixture model-based approach for short text clustering. In Proceedings of the 20th ACM SIGKDD international conference on Knowledge discovery and data mining (pp. 233-242). ACM.
 
-[2] <a name="ref2"></a> David M. Blei. 2012. Probabilistic Topic Models. Communications of the ACM, 55(4):77–84.
+[2] David M. Blei. 2012. Probabilistic Topic Models. Communications of the ACM, 55(4):77–84.
 
-[3] <a name="ref3"></a> Dat Quoc Nguyen, Richard Billingsley, Lan Du and Mark Johnson. 2015. [Improving Topic Models with Latent Feature Word Representations](https://tacl2013.cs.columbia.edu/ojs/index.php/tacl/article/view/582/158). Transactions of the Association for Computational Linguistics, vol. 3, pp. 299-313.
+[3] Dat Quoc Nguyen, Richard Billingsley, Lan Du and Mark Johnson. 2015. [Improving Topic Models with Latent Feature Word Representations](https://tacl2013.cs.columbia.edu/ojs/index.php/tacl/article/view/582/158). Transactions of the Association for Computational Linguistics, vol. 3, pp. 299-313.
 
-[4] <a name="ref4"></a> Kamal Nigam, AK McCallum, S Thrun, and T Mitchell. 2000. Text Classification from Labeled and Unlabeled Documents Using EM. Machine learning, 39:103– 134.
+[4] Kamal Nigam, AK McCallum, S Thrun, and T Mitchell. 2000. Text Classification from Labeled and Unlabeled Documents Using EM. Machine learning, 39:103– 134.
 
-[5] <a name="ref5"></a> Thomas L. Griffiths and Mark Steyvers. 2004. Finding scientific topics. Proceedings of the National Academy of Sciences of the United States of America, 101(Suppl 1):5228–5235.
+[5] Thomas L. Griffiths and Mark Steyvers. 2004. Finding scientific topics. Proceedings of the National Academy of Sciences of the United States of America, 101(Suppl 1):5228–5235.
 
-[6] <a name="ref6"></a> Jianhua Yin and Jianyong Wang. 2014. A Dirichlet Multinomial Mixture Model-based Approach for Short Text Clustering. In Proceedings of the 20th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, pages 233–242.
+[6] Jianhua Yin and Jianyong Wang. 2014. A Dirichlet Multinomial Mixture Model-based Approach for Short Text Clustering. In Proceedings of the 20th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, pages 233–242.
 
-[7] <a name="ref7"></a> Christopher D. Manning, Prabhakar Raghavan, and Hinrich Schutze. 2008. Introduction to Information Retrieval. Cambridge University Press.
+[7] Christopher D. Manning, Prabhakar Raghavan, and Hinrich Schutze. 2008. Introduction to Information Retrieval. Cambridge University Press.
 
-[8] <a name="ref8"></a> Yue Lu, Qiaozhu Mei, and ChengXiang Zhai. 2011. Investigating task performance of probabilistic topic models: an empirical study of PLSA and LDA. Information Retrieval, 14:178–203.
+[8] Yue Lu, Qiaozhu Mei, and ChengXiang Zhai. 2011. Investigating task performance of probabilistic topic models: an empirical study of PLSA and LDA. Information Retrieval, 14:178–203.

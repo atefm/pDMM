@@ -2,7 +2,6 @@
 Contains the main function for running inference from the command line.
 """
 import argparse
-import logging
 import os
 import sys
 
@@ -12,8 +11,6 @@ from .sampling import GibbsSamplingDMM
 
 def main(parameters, seed=None):
     """Main function."""
-    logger = logging.getLogger(__name__)
-
     corpus = Corpus.from_document_file(parameters.corpus_path)
 
     model = GibbsSamplingDMM(
@@ -26,7 +23,6 @@ def main(parameters, seed=None):
     model.inference(parameters.number_of_iterations)
 
     if parameters.output_path:
-        logger.debug("Writing results to file")
         model.save_top_topical_words_to_file(os.path.join(parameters.output_path, "topWords"))
         model.save_topic_assignments_to_file(os.path.join(parameters.output_path, "topicAssignments"))
 

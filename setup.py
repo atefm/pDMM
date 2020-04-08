@@ -13,7 +13,6 @@ with open("README.md", "r") as rf:
 setuptools.setup(
     name=pdmm.__name__,
     version=pdmm.__version__,
-    author="atefm",
     description="A Python 3 implementation for a Dirichlet multinomial mixture model.",
     long_description=long_description,
     long_description_content_type="text/markdown",

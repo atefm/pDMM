@@ -8,7 +8,7 @@ import unittest
 from pdmm import Vocabulary
 
 
-class VocabularyTests(unittest.TestCase):
+class BasicTests(unittest.TestCase):
 
     def setUp(self):
         """Code to run at the start of every test."""
@@ -38,7 +38,7 @@ class VocabularyTests(unittest.TestCase):
         vocab = Vocabulary.from_list_of_words(self.list_of_words)
         vocab.save_to_file(file_path)
         loaded_vocab = Vocabulary.load_from_file(file_path)
-        self.assertEqual(vocab, loaded_vocab)
+        self.assertEqual(vocab, loaded_vocab, "Loaded Vocabulary instance was incorrect.")
 
 
 class EqualityTests(unittest.TestCase):
@@ -50,18 +50,18 @@ class EqualityTests(unittest.TestCase):
 
     def test_bad_equality(self):
         """Test that a Vocabulary instance is not equal to an integer."""
-        with self.assertRaises(TypeError):
-            self.assertNotEqual(self.vocab, 5)
+        with self.assertRaises(TypeError, msg="Equality with an integer did not raise an error."):
+            bool(self.vocab == 5)
 
     def test_false_equality_size(self):
         """Test that two vocabularies of different sizes are not equal."""
         other_vocab = Vocabulary.from_list_of_words(self.list_of_words)
         other_vocab.get_id_from_word("grapes")
-        self.assertNotEqual(self.vocab, other_vocab)
+        self.assertNotEqual(self.vocab, other_vocab, "Vocabulary instances should not be equal.")
 
     def test_inequality(self):
         """Test that vocabs with different words and the same size are not equal."""
         other_list_of_words = self.list_of_words[:]
         other_list_of_words[0] = "grapes"
         other_vocab = Vocabulary.from_list_of_words(other_list_of_words)
-        self.assertNotEqual(self.vocab, other_vocab)
+        self.assertNotEqual(self.vocab, other_vocab, "Vocabulary instances should not be equal.")

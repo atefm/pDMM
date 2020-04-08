@@ -1,10 +1,78 @@
 """
 Tests for the sampling module.
 """
+import os
+import tempfile
 import time
 import unittest
 
 from pdmm import Corpus, GibbsSamplingDMM
+
+from .utils import read_contents_from_path
+
+
+class BasicTests(unittest.TestCase):
+
+    def setUp(self):
+        """Code to run before each test."""
+        corpus = Corpus.from_document_file("tests/data/sample_data")
+        self.model = GibbsSamplingDMM(corpus, number_of_topics=20)
+        self.model.randomly_initialise_topic_assignment(seed=1)
+        self.model.inference(50)
+
+    def test_top_words(self):
+        """Test that the top 10 words are correct."""
+        topic_index = 3
+        expected_top_words = ["siri", "iphone", "year", "word", "minutes", "doc", "blackberry", "sooo", "glad", "gave"]
+        observed_top_words = self.model.get_top_words_for_topic(topic_index, number_of_top_words=10)
+        self.assertListEqual(expected_top_words, observed_top_words, "Top words are not correct.")
+
+
+class FileTests(unittest.TestCase):
+
+    def setUp(self):
+        """Code to run before each test."""
+        corpus = Corpus.from_document_file("tests/data/sample_data")
+        self.model = GibbsSamplingDMM(corpus, number_of_topics=20)
+        self.model.randomly_initialise_topic_assignment(seed=1)
+        self.model.inference(5)
+
+        self.tempdir = tempfile.TemporaryDirectory()
+
+    def tearDown(self):
+        """Code to run at the end of each test."""
+        self.tempdir.cleanup()
+
+    def test_saving_top_words(self):
+        """Test that the topWords file is created properly."""
+        file_path = os.path.join(self.tempdir.name, "topWords")
+        self.model.save_top_topical_words_to_file(file_path)
+
+        lines = []
+        for topic_index in range(self.model.number_of_topics):
+            top_words = self.model.get_top_words_for_topic(topic_index)
+            joined_top_words = " ".join(top_words)
+            line = "Topic {}: {} \n".format(topic_index, joined_top_words)
+            lines.append(line)
+
+        expected_saved_string = "".join(lines)
+        observed_saved_string = read_contents_from_path(file_path)
+        self.assertEqual(expected_saved_string, observed_saved_string)
+
+    def test_saving_assignments(self):
+        """Test that the topicAssignments file is created properly."""
+        file_path = os.path.join(self.tempdir.name, "topicAssignments")
+        self.model.save_topic_assignments_to_file(file_path)
+
+        lines = []
+        for document_index in range(self.model.corpus.number_of_documents):
+            assignment = self.model.document_topic_assignments[document_index]
+            line = "{}\n".format(assignment)
+            lines.append(line)
+
+        expected_saved_string = "".join(lines)
+        observed_saved_string = read_contents_from_path(file_path)
+        self.assertEqual(expected_saved_string, observed_saved_string)
 
 
 class TimingTests(unittest.TestCase):

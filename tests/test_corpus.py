@@ -62,4 +62,4 @@ class BasicTests(unittest.TestCase):
         """Test that a Corpus instance is not equal to an integer."""
         corpus = Corpus.from_documents_as_lists_of_words(self.list_of_documents)
         with self.assertRaises(TypeError):
-            self.assertNotEqual(corpus, 5)
+            bool(corpus == 5)

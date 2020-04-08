@@ -31,24 +31,47 @@ def main(parameters, seed=None):
         model.save_topic_assignments_to_file(os.path.join(parameters.output_path, "topicAssignments"))
 
 
-def check_arg(args=None):
-    parser = argparse.ArgumentParser(description='Topic Modelling')
-    parser.add_argument('-c', '--corpus-file', help='Path to corpus file', dest="corpus_path", required=True,
-                        metavar="<path>")
-    parser.add_argument('-n', '--num-topics', help='Number of topics', dest="number_of_topics", default=20,
-                        metavar="<integer>", type=int)
-    parser.add_argument('-a', '--alpha', help='Alpha value', default=0.1, metavar="<double>", type=float)
-    parser.add_argument('-b', '--beta', help='Beta value', default=0.001, metavar="<double>", type=float)
-    parser.add_argument('--output-path', help='Output directory', dest="output_path", default="./output/",
-                        metavar="<path>")
-    parser.add_argument('--iterations', help='Number of iterations', dest="number_of_iterations", default=2000,
-                        metavar="<integer>", type=int)
-    parser.add_argument('--num_words', help='Number of most probable topical words', dest="number_of_top_words",
-                        default=20, metavar="<integer>", type=int)
+def parse_args(args=None):
+    parser = argparse.ArgumentParser(description="Python Dirichlet Mixture Model Implementation")
+    
+    parser.add_argument("-c", "--corpus-file",
+                        dest="corpus_path", metavar="<path>",
+                        help="Path to corpus file",
+                        required=True)
+                        
+    parser.add_argument("-n", "--num-topics",
+                        dest="number_of_topics", metavar="<integer>",
+                        default=20, type=int,
+                        help="Number of topics")
+                        
+    parser.add_argument("-a", "--alpha",
+                        metavar="<double>",
+                        default=0.1, type=float,
+                        help="Alpha value")
+
+    parser.add_argument("-b", "--beta",
+                        metavar="<double>",
+                        default=0.001, type=float,
+                        help="Beta value")
+
+    parser.add_argument("--output-path",
+                        dest="output_path", metavar="<path>",
+                        help="Output directory")
+
+    parser.add_argument("--iterations",
+                        dest="number_of_iterations", metavar="<integer>",
+                        default=2000, type=int,
+                        help="Number of iterations")
+
+    parser.add_argument("--num_words",
+                        dest="number_of_top_words", metavar="<integer>",
+                        default=20,  type=int,
+                        help="Number of most probable topical words")
+
     parameters = parser.parse_args(args)
     return parameters
 
 
 if __name__ == '__main__':
-    parsed_parameters = check_arg(sys.argv[1:])
+    parsed_parameters = parse_args(sys.argv[1:])
     main(parsed_parameters)

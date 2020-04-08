@@ -28,9 +28,9 @@ class RandomTests(unittest.TestCase):
             sampled_value = pdmm.utils.sample_from_cumulative_weights(self.cumulative_weights, random_number)
             sampled_values.append(sampled_value)
 
-        self.assertListEqual(sampled_values, self.expected_values)
+        self.assertListEqual(sampled_values, self.expected_values, "Sampled values were not as expected.")
 
     def test_multiple_sampling(self):
-        """Test that sampling all at works produces the same results."""
+        """Test that sampling all at once produces the same results."""
         sampled_values = pdmm.utils.sample_many_from_cumulative_weights(self.cumulative_weights, self.random_numbers)
-        self.assertListEqual(list(sampled_values), self.expected_values)
+        self.assertListEqual(list(sampled_values), self.expected_values, "Sampled values were not as expected.")

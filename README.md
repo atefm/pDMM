@@ -65,7 +65,7 @@ Tests can be run from the command line:
 $ python3 -m tests
 ```
 
-The tests can be slow as they are insuring that the inference is producing the expected results. Alternatively, a test module can be run individually:
+The tests can be slow as they are ensuring that the inference is producing the expected results. Alternatively, a test module can be run individually:
 
 ```shell script
 $ python3 -m tests corpus

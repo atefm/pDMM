@@ -10,7 +10,7 @@ import numpy as np
 from pdmm import Corpus
 
 
-class CorpusTest(unittest.TestCase):
+class BasicTests(unittest.TestCase):
 
     def setUp(self):
         """Code to run before every test."""

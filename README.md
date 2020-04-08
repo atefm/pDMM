@@ -8,6 +8,14 @@ Applying topic models for short texts (e.g. Tweets) is more challenging because 
 
 Bug reports, comments and suggestions about pDMM are highly appreciated. As a free open-source package, pDMM is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
+## Installation
+
+`pdmm` can be run without installation from within the repository directory, but the package can be installed locally with `pip`:
+
+```shell script
+$ pip install setup.py
+```
+
 ## Usage
 
 From the command line:
@@ -65,11 +73,21 @@ $ python3 -m tests corpus
 
 This will attempt to run the tests in the file `tests/test_corpus.py`.
 
-# Requirements
+## Requirements
 
 Python 3.7 is required. All package requirements can be found in `requirements.txt`, but the main dependencies are `numpy` and `numba`.
 
-# References
+## Changes from Original Implementation
+
+All changes can be tracked on Github, but the broad changes are as follows:
+
+* The addition of tests to ensure that the algorithm was not affected during refactoring.
+* Creation of a Python module rather than standalone scripts, allowing code to be run properly within the interpreter.
+* Cleaner code and PEP8 compliance.
+* Code rewritten to use NumPy arrays and run more steps in parallel. This led to a massive subsequent speed-up.
+* Code to generate new documents after inference has been completed.
+
+## References
 [1] Jianhua Yin and Jianyong Wang, 2014, August. [A Dirichlet Multinomial Mixture Model-based Approach for Short Text Clustering](https://dl.acm.org/doi/10.1145/2623330.2623715). In Proceedings of the 20th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining (pp. 233-242). ACM.
 
 [2] David M. Blei. 2012. [Probabilistic Topic Models](https://dl.acm.org/doi/10.1145/2133806.2133826). Communications of the ACM, 55(4):77–84.

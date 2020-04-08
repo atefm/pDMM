@@ -32,7 +32,7 @@ def main(parameters, seed=None):
 
 
 def parse_args(args=None):
-    parser = argparse.ArgumentParser(description="Python Dirichlet Mixture Model Implementation")
+    parser = argparse.ArgumentParser(prog="pdmm", description="Python Dirichlet Mixture Model Implementation")
     
     parser.add_argument("-c", "--corpus-file",
                         dest="corpus_path", metavar="<path>",

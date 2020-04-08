@@ -6,6 +6,8 @@ import tempfile
 import time
 import unittest
 
+import numpy as np
+
 from pdmm import Corpus, GibbsSamplingDMM
 
 from .utils import read_contents_from_path
@@ -18,10 +20,17 @@ class BasicTests(unittest.TestCase):
         corpus = Corpus.from_document_file("tests/data/sample_data")
         self.model = GibbsSamplingDMM(corpus, number_of_topics=20)
         self.model.randomly_initialise_topic_assignment(seed=1)
-        self.model.inference(50)
+
+    def test_random_topic_assignment(self):
+        """Test that the initial random topic assignment is correct at certain indices."""
+        test_indices = np.array([140,  83, 159, 171,  74, 178, 145,  90,  32,  88])
+        observed_assignments = self.model.document_topic_assignments[test_indices]
+        expected_assignments = [7, 13, 17, 14, 19, 16, 13, 13, 17, 11]
+        self.assertListEqual(list(observed_assignments), expected_assignments)
 
     def test_top_words(self):
         """Test that the top 10 words are correct."""
+        self.model.inference(50)
         topic_index = 3
         expected_top_words = ["siri", "iphone", "year", "word", "minutes", "doc", "blackberry", "sooo", "glad", "gave"]
         observed_top_words = self.model.get_top_words_for_topic(topic_index, number_of_top_words=10)

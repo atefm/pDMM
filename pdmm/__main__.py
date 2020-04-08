@@ -31,7 +31,7 @@ def main(parameters, seed=None):
         model.save_topic_assignments_to_file(os.path.join(parameters.output_path, "topicAssignments"))
 
 
-def check_arg(args=None):
+def parse_args(args=None):
     parser = argparse.ArgumentParser(description='Topic Modelling')
     parser.add_argument('-c', '--corpus-file', help='Path to corpus file', dest="corpus_path", required=True,
                         metavar="<path>")
@@ -50,5 +50,5 @@ def check_arg(args=None):
 
 
 if __name__ == '__main__':
-    parsed_parameters = check_arg(sys.argv[1:])
+    parsed_parameters = parse_args(sys.argv[1:])
     main(parsed_parameters)

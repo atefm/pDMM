@@ -5,7 +5,7 @@ import os
 import tempfile
 import unittest
 
-from pdmm.__main__ import check_arg
+from pdmm.__main__ import parse_args
 from pdmm.__main__ import main as pdmm_main
 
 from .utils import read_contents_from_path
@@ -25,7 +25,7 @@ class CommandLineTests(unittest.TestCase):
         """Test that the output is correct."""
         arg_string = "--corpus {} --output {} --iterations {}".format("tests/data/sample_data", self.tempdir.name, 50)
         arguments_components = arg_string.split()
-        parsed_args = check_arg(arguments_components)
+        parsed_args = parse_args(arguments_components)
 
         pdmm_main(parsed_args, seed=1)
 

@@ -18,19 +18,19 @@ $ python3 -m pdmm [-h] -c <path> [-n <integer>] [-a <double>] [-b <double>] [--o
 
 where parameters in [ ] are optional.
 
-`-c, --corpus`: Specify the path to the input corpus file.
+`-c, --corpus` Specify the path to the input corpus file.
 
-`-n, --num-topics`: Specify the number of topics. The default is 20.
+`-n, --num-topics` Specify the number of topics. The default is 20.
 
-`-a, --alpha`: Specify the hyper-parameter alpha. The default value is 0.1.
+`-a, --alpha` Specify the hyper-parameter alpha. The default value is 0.1.
 
-`-b, --beta`: Specify the hyper-parameter beta. The default value is 0.01, which is a common setting in the literature [[5]](#references). Following [[6]](#references), the users may consider a `beta` value of 0.1 for short texts.
+`-b, --beta` Specify the hyper-parameter beta. The default value is 0.01, which is a common setting in the literature [[5]](#references). Following [[6]](#references), the users may consider a `beta` value of 0.1 for short texts.
 
-`--output-path`: Specify the output path for the results, which are saved in a folder at the path containing the files `topWords` and `topicAssignments`. If a path is not given, output will not be saved.
+`--output-path` Specify the output path for the results, which are saved in a folder at the path containing the files `topWords` and `topicAssignments`. If a path is not given, output will not be saved.
 
-`--iterations`: Specify the number of Gibbs sampling iterations. The default value is 2,000.
+`--iterations` Specify the number of Gibbs sampling iterations. The default value is 2,000.
 
-`--num-words`: Specify the number of top words to be presented and/or saved for each topic. The default value is 20.
+`--num-words` Specify the number of top words to be presented and/or saved for each topic. The default value is 20.
 
 
 Consider the following example:

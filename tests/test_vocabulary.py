@@ -8,7 +8,7 @@ import unittest
 from pdmm import Vocabulary
 
 
-class VocabularyTests(unittest.TestCase):
+class BasicTests(unittest.TestCase):
 
     def setUp(self):
         """Code to run at the start of every test."""

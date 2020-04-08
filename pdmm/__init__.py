@@ -1,5 +1,5 @@
 """
-Python3 implementation for Dirichlet multinomial mixture model.
+Python 3 implementation for Dirichlet multinomial mixture model.
 """
 from .corpus import Corpus
 from .sampling import GibbsSamplingDMM

@@ -50,11 +50,11 @@ $ python3 -m pdmm --corpus-file tests/data/sample_data  --iterations 100
 From the interpreter:
 
 ```python
-import pdmm
-corpus = pdmm.Corpus.from_document_file("/path/to/corpus/file")
-model = pdmm.GibbsSamplingDMM(corpus)
-model.randomly_initialise_topic_assignment()
-model.inference(number_of_iterations=100)
+>>> import pdmm
+>>> corpus = pdmm.Corpus.from_document_file("/path/to/corpus/file")
+>>> model = pdmm.GibbsSamplingDMM(corpus)
+>>> model.randomly_initialise_topic_assignment()
+>>> model.inference(number_of_iterations=100)
 ```
 
 ## Tests

@@ -67,7 +67,7 @@ class FileTests(unittest.TestCase):
 
         expected_saved_string = "".join(lines)
         observed_saved_string = read_contents_from_path(file_path)
-        self.assertEqual(expected_saved_string, observed_saved_string, "Top words file was not correctly saved.")
+        self.assertEqual(expected_saved_string, observed_saved_string, "topWords file was not correctly saved.")
 
     def test_saving_assignments(self):
         """Test that the topicAssignments file is created properly."""
@@ -82,7 +82,7 @@ class FileTests(unittest.TestCase):
 
         expected_saved_string = "".join(lines)
         observed_saved_string = read_contents_from_path(file_path)
-        self.assertEqual(expected_saved_string, observed_saved_string, "Topic assignments file was not correctly saved.")
+        self.assertEqual(expected_saved_string, observed_saved_string, "topicAssignments file was not correctly saved.")
 
 
 class TimingTests(unittest.TestCase):

@@ -128,7 +128,7 @@ class GibbsSamplingDMM:
 
     def get_top_words_for_topic(self, topic_index, number_of_top_words=20):
         """
-        Get a list of the top words in a topic.
+        Get a list of the most common words in a topic.
 
         Parameters
         ----------
@@ -143,7 +143,7 @@ class GibbsSamplingDMM:
         Returns
         -------
         top_words : list[str]
-            A list of the top words as strings.
+            A list of the most common words as strings.
         """
         number_of_each_word_in_topic = self.number_of_each_word_in_each_topic[topic_index]
         word_counts = Counter(dict(enumerate(number_of_each_word_in_topic)))

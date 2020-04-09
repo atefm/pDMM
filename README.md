@@ -32,7 +32,7 @@ where parameters in [ ] are optional.
 
 `-a, --alpha` Specify the hyper-parameter alpha, relating to the probability of a document choosing a given topic. The default value is 0.1.
 
-`-b, --beta` Specify the hyper-parameter beta. The default value is 0.01, which is a common setting in the literature [[5]](#references). Following [[1]](#references), the users may consider a `beta` value of 0.1 for short texts.
+`-b, --beta` Specify the hyper-parameter beta, relating to the probability of a document choosing a particular topic containing similar documents. Smaller values reduce the variance of a document in individual topics. The default value is 0.01, which is a common setting in the literature [[5]](#references). Following [[1]](#references), the users may consider a `beta` value of 0.1 for short texts.
 
 `--output-path` Specify the output path for the results, which are saved in a folder at the path containing the files `topWords` and `topicAssignments`. If a path is not given, output will not be saved.
 

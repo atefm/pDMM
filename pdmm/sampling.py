@@ -23,7 +23,11 @@ class GibbsSamplingDMM:
         The hyper-parameter alpha, relating to the
         probability of a document choosing a given topic.
     beta : float
-        The hyper-parameter beta.
+        The hyper-parameter beta, relating to the
+        probability of a document choosing a particular
+        topic containing similar documents. Smaller
+        values reduce the variance of a document in
+        individual topics.
     document_topic_assignments : np.ndarray[int]
         An array of the topic indexes, where the ith element
         is the topic index to which document i has been assigned.
@@ -56,7 +60,11 @@ class GibbsSamplingDMM:
             The hyper-parameter alpha, relating to the
             probability of a document choosing a given topic.
         beta : float, defaults to 0.001
-            The hyper-parameter beta.
+            The hyper-parameter beta, relating to the
+            probability of a document choosing a particular
+            topic containing similar documents. Smaller
+            values reduce the variance of a document in
+            individual topics.
         """
         self.corpus = corpus
         self.number_of_topics = number_of_topics

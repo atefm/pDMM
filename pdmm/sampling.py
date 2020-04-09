@@ -20,7 +20,8 @@ class GibbsSamplingDMM:
     number_of_topics : int
         The number of topics.
     alpha : float
-        The hyper-parameter alpha
+        The hyper-parameter alpha, relating to the
+        probability of a document choosing a given topic.
     beta : float
         The hyper-parameter beta.
     document_topic_assignments : list[int]
@@ -52,9 +53,11 @@ class GibbsSamplingDMM:
         number_of_topics : int, defaults to 20
             The number of topics.
         alpha : float, defaults to 0.1
-            The hyper-parameter alpha
+            The hyper-parameter alpha, relating to the
+            probability of a document choosing a given topic.
         beta : float, defaults to 0.001
-            The hyper-parameter beta.
+            The hyper-parameter beta relating to the
+            probability of choosing a cluster
         """
         self.corpus = corpus
         self.number_of_topics = number_of_topics

@@ -30,7 +30,7 @@ where parameters in [ ] are optional.
 
 `-n, --num-topics` Specify the number of topics. The default is 20.
 
-`-a, --alpha` Specify the hyper-parameter alpha. The default value is 0.1.
+`-a, --alpha` Specify the hyper-parameter alpha, relating to the probability of a document choosing a given topic. The default value is 0.1.
 
 `-b, --beta` Specify the hyper-parameter beta. The default value is 0.01, which is a common setting in the literature [[5]](#references). Following [[1]](#references), the users may consider a `beta` value of 0.1 for short texts.
 

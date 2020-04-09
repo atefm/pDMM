@@ -43,6 +43,10 @@ class Corpus:
             self.vocab == other.vocab
         ])
 
+    def __iter__(self):
+        for document in self.documents:
+            yield document
+
     @property
     def number_of_documents(self):
         """Return the number of documents in the corpus."""
@@ -50,7 +54,7 @@ class Corpus:
 
     def get_mean_document_length(self):
         """Get the mean length of documents in the corpus."""
-        sum_of_lengths = sum(len(document) for document in self.documents)
+        sum_of_lengths = sum(len(document) for document in self)
         return sum_of_lengths / self.number_of_documents
 
     @classmethod

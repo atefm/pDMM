@@ -197,7 +197,7 @@ class GibbsSamplingDMM:
          in Yin's paper [1].
         - These steps MUST be done in series.
         """
-        for document_index, document in enumerate(self.corpus.documents):
+        for document_index, document in enumerate(self.corpus):
             current_topic_index = self.document_topic_assignments[document_index]
             self.number_of_documents_in_each_topic[current_topic_index] -= 1
             self._unassign_document_from_topic(document_index, current_topic_index)

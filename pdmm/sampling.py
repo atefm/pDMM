@@ -56,8 +56,7 @@ class GibbsSamplingDMM:
             The hyper-parameter alpha, relating to the
             probability of a document choosing a given topic.
         beta : float, defaults to 0.001
-            The hyper-parameter beta relating to the
-            probability of choosing a cluster
+            The hyper-parameter beta.
         """
         self.corpus = corpus
         self.number_of_topics = number_of_topics

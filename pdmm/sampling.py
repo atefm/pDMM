@@ -24,17 +24,17 @@ class GibbsSamplingDMM:
         probability of a document choosing a given topic.
     beta : float
         The hyper-parameter beta.
-    document_topic_assignments : list[int]
-        A list of the topic indexes, where the ith element
+    document_topic_assignments : np.ndarray[int]
+        An array of the topic indexes, where the ith element
         is the topic index to which document i has been assigned.
-    number_of_documents_in_each_topic : list[int]
+    number_of_documents_in_each_topic : np.ndarray[int]
         The number of documents in each topic.
-    number_of_each_word_in_each_topic : list[list[int]]
-        A list of lists containing the counts of each word
-        within each topic.
-    number_of_total_words_in_each_topic : list[int]
+    number_of_each_word_in_each_topic : np.ndarray[int, int]
+        An array in which the (i,j)th element is the count
+        of word j within topic i.
+    number_of_total_words_in_each_topic : np.ndarray[int]
         The number of words total within each topic.
-    topic_weights : list[float]
+    topic_weights : np.ndarray[float]
         The weights for each of the topics.
     logger : logging.Logger
         The logger for the class.

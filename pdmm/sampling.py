@@ -214,7 +214,7 @@ class GibbsSamplingDMM:
 
     def _update_topic_weights_for_document(self, document_index):
         """Update the topic weights for a particular document."""
-        document = self.corpus.documents[document_index]
+        document = self.corpus[document_index]
         self.topic_weights = self.number_of_documents_in_each_topic + self.alpha
         occurrence_to_index_count_for_document = self.corpus.occurrence_to_index_count[document_index]
 
@@ -230,12 +230,12 @@ class GibbsSamplingDMM:
 
     def _assign_document_to_topic(self, document_index, topic_index):
         """Assign a document to a topic."""
-        document = self.corpus.documents[document_index]
+        document = self.corpus[document_index]
         self.number_of_total_words_in_each_topic[topic_index] += len(document)
         self.number_of_each_word_in_each_topic[topic_index] += self.corpus.word_counts_in_documents[document_index]
 
     def _unassign_document_from_topic(self, document_index, topic_index):
         """Un-assign a document from a topic."""
-        document = self.corpus.documents[document_index]
+        document = self.corpus[document_index]
         self.number_of_total_words_in_each_topic[topic_index] -= len(document)
         self.number_of_each_word_in_each_topic[topic_index] -= self.corpus.word_counts_in_documents[document_index]

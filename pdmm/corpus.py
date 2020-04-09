@@ -47,6 +47,9 @@ class Corpus:
         for document in self.documents:
             yield document
 
+    def __getitem__(self, item):
+        return self.documents[item]
+
     @property
     def number_of_documents(self):
         """Return the number of documents in the corpus."""

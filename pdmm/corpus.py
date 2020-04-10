@@ -64,18 +64,18 @@ class Corpus:
     def from_document_file(cls, file_path):
         """Create a Corpus instance from a document file."""
         with open(file_path, "r") as rf:
-            list_of_documents = [line.rstrip().split() for line in rf.readlines()]
+            list_of_documents = (line.rstrip().split() for line in rf.readlines())
 
-        return cls.from_documents_as_lists_of_words(list_of_documents)
+        return cls.from_iterable_of_word_lists(list_of_documents)
 
     @classmethod
-    def from_documents_as_lists_of_words(cls, list_of_documents):
-        """Create a Corpus instance from a list of lists of words."""
+    def from_iterable_of_word_lists(cls, iterable_of_word_lists):
+        """Create a Corpus instance from an iterable yielding lists of words."""
         vocab = Vocabulary()
         documents = []
         occurrence_to_index_count = []
 
-        for list_of_words in list_of_documents:
+        for list_of_words in iterable_of_word_lists:
             document = []
             word_occurrence_to_index_in_document_count = Counter()
             word_occurrence_to_index_in_document = []

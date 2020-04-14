@@ -90,5 +90,6 @@ class Corpus:
             documents.append(document)
             occurrence_to_index_count.append(word_occurrence_to_index_in_document)
 
-        word_counts_in_documents = np.array([np.bincount(document, minlength=vocab.size) for document in documents])
-        return cls(documents, occurrence_to_index_count, word_counts_in_documents, vocab)
+        word_counts_in_documents = [np.bincount(document, minlength=vocab.size) for document in documents]
+        word_counts_in_documents_as_array = np.array(word_counts_in_documents, dtype=np.int32)
+        return cls(documents, occurrence_to_index_count, word_counts_in_documents_as_array, vocab)

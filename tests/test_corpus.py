@@ -20,7 +20,7 @@ class CreationTests(unittest.TestCase):
             ["the", "lazy", "lazy", "dog"]
         ]
         self.tempdir = tempfile.TemporaryDirectory()
-        self.corpus = Corpus.from_documents_as_lists_of_words(self.list_of_documents)
+        self.corpus = Corpus.from_iterable_of_word_lists(self.list_of_documents)
 
     def tearDown(self):
         """Code to run after every test."""
@@ -54,7 +54,7 @@ class CreationTests(unittest.TestCase):
                 wf.write(line)
 
         corpus_from_file = Corpus.from_document_file(file_path)
-        corpus_from_documents = Corpus.from_documents_as_lists_of_words(self.list_of_documents)
+        corpus_from_documents = Corpus.from_iterable_of_word_lists(self.list_of_documents)
         self.assertEqual(corpus_from_documents, corpus_from_file, "Loaded corpus is not correct.")
 
 
@@ -67,7 +67,7 @@ class AttributeTests(unittest.TestCase):
             ["jumped", "over"],
             ["the", "lazy", "lazy", "dog"]
         ]
-        self.corpus = Corpus.from_documents_as_lists_of_words(self.list_of_documents)
+        self.corpus = Corpus.from_iterable_of_word_lists(self.list_of_documents)
 
     def test_number_of_documents(self):
         """Test that the correct number of documents is reported."""
@@ -81,6 +81,6 @@ class AttributeTests(unittest.TestCase):
 
     def test_bad_equality(self):
         """Test that a Corpus instance is not equal to an integer."""
-        corpus = Corpus.from_documents_as_lists_of_words(self.list_of_documents)
+        corpus = Corpus.from_iterable_of_word_lists(self.list_of_documents)
         with self.assertRaises(TypeError, msg="Comparison to incorrect type should raise an error."):
             bool(corpus == 5)

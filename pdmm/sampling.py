@@ -20,20 +20,25 @@ class GibbsSamplingDMM:
     number_of_topics : int
         The number of topics.
     alpha : float
-        The hyper-parameter alpha
+        The hyper-parameter alpha, relating to the
+        probability of a document choosing a given topic.
     beta : float
-        The hyper-parameter beta.
-    document_topic_assignments : list[int]
-        A list of the topic indexes, where the ith element
+        The hyper-parameter beta, relating to the
+        probability of a document choosing a particular
+        topic containing similar documents. Smaller
+        values reduce the variance of a document in
+        individual topics.
+    document_topic_assignments : np.ndarray[int]
+        An array of the topic indexes, where the ith element
         is the topic index to which document i has been assigned.
-    number_of_documents_in_each_topic : list[int]
+    number_of_documents_in_each_topic : np.ndarray[int]
         The number of documents in each topic.
-    number_of_each_word_in_each_topic : list[list[int]]
-        A list of lists containing the counts of each word
-        within each topic.
-    number_of_total_words_in_each_topic : list[int]
+    number_of_each_word_in_each_topic : np.ndarray[int, int]
+        An array in which the (i,j)th element is the count
+        of word j within topic i.
+    number_of_total_words_in_each_topic : np.ndarray[int]
         The number of words total within each topic.
-    topic_weights : list[float]
+    topic_weights : np.ndarray[float]
         The weights for each of the topics.
     logger : logging.Logger
         The logger for the class.
@@ -52,9 +57,14 @@ class GibbsSamplingDMM:
         number_of_topics : int, defaults to 20
             The number of topics.
         alpha : float, defaults to 0.1
-            The hyper-parameter alpha
+            The hyper-parameter alpha, relating to the
+            probability of a document choosing a given topic.
         beta : float, defaults to 0.001
-            The hyper-parameter beta.
+            The hyper-parameter beta, relating to the
+            probability of a document choosing a particular
+            topic containing similar documents. Smaller
+            values reduce the variance of a document in
+            individual topics.
         """
         self.corpus = corpus
         self.number_of_topics = number_of_topics
@@ -128,7 +138,7 @@ class GibbsSamplingDMM:
 
     def get_top_words_for_topic(self, topic_index, number_of_top_words=20):
         """
-        Get a list of the top words in a topic.
+        Get a list of the most common words in a topic.
 
         Parameters
         ----------
@@ -143,7 +153,7 @@ class GibbsSamplingDMM:
         Returns
         -------
         top_words : list[str]
-            A list of the top words as strings.
+            A list of the most common words as strings.
         """
         number_of_each_word_in_topic = self.number_of_each_word_in_each_topic[topic_index]
         word_counts = Counter(dict(enumerate(number_of_each_word_in_topic)))
@@ -197,7 +207,7 @@ class GibbsSamplingDMM:
          in Yin's paper [1].
         - These steps MUST be done in series.
         """
-        for document_index, document in enumerate(self.corpus.documents):
+        for document_index, document in enumerate(self.corpus):
             current_topic_index = self.document_topic_assignments[document_index]
             self.number_of_documents_in_each_topic[current_topic_index] -= 1
             self._unassign_document_from_topic(document_index, current_topic_index)
@@ -214,7 +224,7 @@ class GibbsSamplingDMM:
 
     def _update_topic_weights_for_document(self, document_index):
         """Update the topic weights for a particular document."""
-        document = self.corpus.documents[document_index]
+        document = self.corpus[document_index]
         self.topic_weights = self.number_of_documents_in_each_topic + self.alpha
         occurrence_to_index_count_for_document = self.corpus.occurrence_to_index_count[document_index]
 
@@ -230,12 +240,12 @@ class GibbsSamplingDMM:
 
     def _assign_document_to_topic(self, document_index, topic_index):
         """Assign a document to a topic."""
-        document = self.corpus.documents[document_index]
+        document = self.corpus[document_index]
         self.number_of_total_words_in_each_topic[topic_index] += len(document)
         self.number_of_each_word_in_each_topic[topic_index] += self.corpus.word_counts_in_documents[document_index]
 
     def _unassign_document_from_topic(self, document_index, topic_index):
         """Un-assign a document from a topic."""
-        document = self.corpus.documents[document_index]
+        document = self.corpus[document_index]
         self.number_of_total_words_in_each_topic[topic_index] -= len(document)
         self.number_of_each_word_in_each_topic[topic_index] -= self.corpus.word_counts_in_documents[document_index]

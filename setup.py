@@ -19,7 +19,7 @@ setuptools.setup(
     url="https://github.com/gchqdev227/pDMM",
     packages=[pdmm.__name__],
     install_requires=["coverage", "numba", "numpy"],
-    python_requires=">=3.7",
+    python_requires=">=3.4",
     classifiers=[
         "Development Status :: 4 - Beta",
         "Programming Language :: Python :: 3.7"

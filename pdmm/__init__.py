@@ -9,4 +9,4 @@ from .corpus import Corpus
 from .sampling import GibbsSamplingDMM
 from .vocabulary import Vocabulary
 
-__version__ = "2.0.0"
+__version__ = "2.0.1"

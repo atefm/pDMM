@@ -1,5 +1,11 @@
 # pdmm: Python 3 Implementation for Dirichlet Multinomial Mixture (DMM) Model
 
+![version] ![python] ![coverage]
+
+[coverage]: https://img.shields.io/badge/coverage-100%25-brightgreen
+[python]: https://img.shields.io/badge/python-3.4,%203.5,%203.6,%203.7,%203.8-informational
+[version]: https://img.shields.io/badge/version-2.0.1-informational
+
 This is a Python 3 version of the [original implementation](https://github.com/atefm/pDMM) written by [atefm](https://github.com/atefm). It has a number of improvements, mainly speed and clarity. A full list of changes is available below.
 
 ## Description

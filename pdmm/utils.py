@@ -63,7 +63,7 @@ def sample_many_from_cumulative_weights(cumulative_weights, random_numbers):
     maximum_counter_value = number_of_weights - 1
     upper_bounds = number_of_weights - np.ones_like(random_numbers, dtype=np.int32)
 
-    for i in range(maximum_counter_value):
+    for _ in range(maximum_counter_value):
         mid_values = (counters + ((upper_bounds - counters) // 2)).astype(np.int32)
         indicators = scaled_random_numbers > cumulative_weights[mid_values]
         counters = (indicators * mid_values) + ((np.int32(1) - indicators) * counters) + indicators

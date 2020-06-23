@@ -28,6 +28,7 @@ def main(parameters, seed=None):
 
 
 def parse_args(args=None):
+    """Parse arguments for the main function."""
     parser = argparse.ArgumentParser(prog="pdmm", description="Python Dirichlet Mixture Model Implementation")
     
     parser.add_argument("-c", "--corpus-file",
